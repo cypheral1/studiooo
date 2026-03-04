@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "An elegant arrangement of cosmetic products with a lavender and purple theme.",
-      "imageUrl": "https://picsum.photos/seed/301/1920/1080",
-      "imageHint": "lavender cosmetics"
+      "description": "A beautiful and aesthetic image with a purple and lavender color scheme.",
+      "imageUrl": "https://picsum.photos/seed/401/1920/1080",
+      "imageHint": "purple aesthetic"
     },
     {
       "id": "amazon-logo",
@@ -32,9 +32,9 @@
     },
     {
       "id": "free-guide-cover",
-      "description": "Cover image for the free guide on identifying fake cosmetics, with a lavender theme.",
-      "imageUrl": "https://picsum.photos/seed/302/1080/1350",
-      "imageHint": "lavender book"
+      "description": "A beautiful flatlay image with a lavender theme for the free guide cover.",
+      "imageUrl": "https://picsum.photos/seed/402/1080/1350",
+      "imageHint": "lavender flatlay"
     },
     {
       "id": "trust-badge-1",
