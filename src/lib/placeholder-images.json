@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "A beautiful starry sky with purple tones.",
-      "imageUrl": "https://picsum.photos/seed/stars-purple-sky/1920/1080",
-      "imageHint": "stars purple"
+      "description": "A beautiful and relaxing purple starry sky.",
+      "imageUrl": "https://picsum.photos/seed/purple-night-sky/1920/1080",
+      "imageHint": "purple sky"
     },
     {
       "id": "amazon-logo",
@@ -33,7 +33,7 @@
     {
       "id": "free-guide-cover",
       "description": "Artistic rendering of a woman's face with purple flowers.",
-      "imageUrl": "https://picsum.photos/seed/woman-flowers-art/1080/1350",
+      "imageUrl": "https://picsum.photos/seed/lavender-flowers-art/1080/1350",
       "imageHint": "woman flowers"
     },
     {
