@@ -13,7 +13,6 @@ const navItems = [
   { name: 'Free Guide', href: '#free-guide' },
   { name: 'FAQ', href: '#faq' },
   { name: 'Upload & Check', href: '#verification' },
-  { name: 'Proof', href: '#verification' },
 ];
 
 export function Header() {
