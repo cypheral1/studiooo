@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "Aesthetic arrangement of cosmetic products on a clean surface.",
-      "imageUrl": "https://picsum.photos/seed/101/1920/1080",
-      "imageHint": "cosmetics beauty"
+      "description": "An elegant arrangement of cosmetic products with a lavender and purple theme.",
+      "imageUrl": "https://picsum.photos/seed/301/1920/1080",
+      "imageHint": "lavender cosmetics"
     },
     {
       "id": "amazon-logo",
@@ -32,9 +32,9 @@
     },
     {
       "id": "free-guide-cover",
-      "description": "Cover image for the free guide on identifying fake cosmetics.",
-      "imageUrl": "https://images.unsplash.com/photo-1633477189729-9290b3261d0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxib29rJTIwY292ZXJ8ZW58MHx8fHwxNzcyNTQ3MTI5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "book cover"
+      "description": "Cover image for the free guide on identifying fake cosmetics, with a lavender theme.",
+      "imageUrl": "https://picsum.photos/seed/302/1080/1350",
+      "imageHint": "lavender book"
     },
     {
       "id": "trust-badge-1",
