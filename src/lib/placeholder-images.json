@@ -1,3 +1,52 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "Aesthetic arrangement of cosmetic products on a clean surface.",
+      "imageUrl": "https://picsum.photos/seed/101/1920/1080",
+      "imageHint": "cosmetics beauty"
+    },
+    {
+      "id": "amazon-logo",
+      "description": "Amazon logo",
+      "imageUrl": "https://picsum.photos/seed/102/200/100",
+      "imageHint": "logo amazon"
+    },
+    {
+      "id": "nykaa-logo",
+      "description": "Nykaa logo",
+      "imageUrl": "https://picsum.photos/seed/103/200/100",
+      "imageHint": "logo beauty"
+    },
+    {
+      "id": "sephora-logo",
+      "description": "Sephora logo",
+      "imageUrl": "https://picsum.photos/seed/104/200/100",
+      "imageHint": "logo sephora"
+    },
+    {
+      "id": "brand-store-logo",
+      "description": "Generic brand store logo",
+      "imageUrl": "https://picsum.photos/seed/105/200/100",
+      "imageHint": "logo store"
+    },
+    {
+      "id": "free-guide-cover",
+      "description": "Cover image for the free guide on identifying fake cosmetics.",
+      "imageUrl": "https://images.unsplash.com/photo-1633477189729-9290b3261d0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxib29rJTIwY292ZXJ8ZW58MHx8fHwxNzcyNTQ3MTI5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "book cover"
+    },
+    {
+      "id": "trust-badge-1",
+      "description": "100% Secure trust badge",
+      "imageUrl": "https://picsum.photos/seed/107/100/100",
+      "imageHint": "badge security"
+    },
+    {
+      "id": "trust-badge-2",
+      "description": "AI Powered trust badge",
+      "imageUrl": "https://picsum.photos/seed/108/100/100",
+      "imageHint": "badge ai"
+    }
+  ]
 }
