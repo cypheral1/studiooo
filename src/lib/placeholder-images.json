@@ -2,39 +2,39 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "A beautiful and relaxing purple starry sky.",
-      "imageUrl": "https://picsum.photos/seed/purple-night-sky/1920/1080",
-      "imageHint": "purple sky"
+      "description": "An elegant flat lay of cosmetic products with lavender flowers and a soft purple background.",
+      "imageUrl": "https://picsum.photos/seed/cosmetics-lavender/1920/1080",
+      "imageHint": "cosmetics lavender"
     },
     {
       "id": "amazon-logo",
-      "description": "Amazon logo",
-      "imageUrl": "https://picsum.photos/seed/102/200/100",
-      "imageHint": "logo amazon"
+      "description": "Placeholder logo for Amazon",
+      "imageUrl": "https://picsum.photos/seed/logo-one/200/100",
+      "imageHint": "logo simple"
     },
     {
       "id": "nykaa-logo",
-      "description": "Nykaa logo",
-      "imageUrl": "https://picsum.photos/seed/103/200/100",
-      "imageHint": "logo beauty"
+      "description": "Placeholder logo for Nykaa",
+      "imageUrl": "https://images.unsplash.com/photo-1744390166851-82056c6552d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsb2dvJTIwYWJzdHJhY3R8ZW58MHx8fHwxNzcyNTU2Nzc0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "logo abstract"
     },
     {
       "id": "sephora-logo",
-      "description": "Sephora logo",
-      "imageUrl": "https://picsum.photos/seed/104/200/100",
-      "imageHint": "logo sephora"
+      "description": "Placeholder logo for Sephora",
+      "imageUrl": "https://picsum.photos/seed/logo-three/200/100",
+      "imageHint": "logo modern"
     },
     {
       "id": "brand-store-logo",
-      "description": "Generic brand store logo",
-      "imageUrl": "https://picsum.photos/seed/105/200/100",
-      "imageHint": "logo store"
+      "description": "Placeholder logo for an official brand store",
+      "imageUrl": "https://picsum.photos/seed/logo-four/200/100",
+      "imageHint": "logo brand"
     },
     {
       "id": "free-guide-cover",
-      "description": "Artistic rendering of a woman's face with purple flowers.",
-      "imageUrl": "https://picsum.photos/seed/lavender-flowers-art/1080/1350",
-      "imageHint": "woman flowers"
+      "description": "A close-up of a high-end cosmetic product bottle with a purple hue.",
+      "imageUrl": "https://picsum.photos/seed/cosmetic-bottle-purple/1080/1350",
+      "imageHint": "cosmetic bottle"
     },
     {
       "id": "trust-badge-1",
