@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "A beautiful flatlay of lavender and cosmetic products.",
-      "imageUrl": "https://picsum.photos/seed/lavender-beauty/1920/1080",
-      "imageHint": "lavender cosmetics"
+      "description": "A beautiful starry sky with purple tones.",
+      "imageUrl": "https://picsum.photos/seed/stars-purple-sky/1920/1080",
+      "imageHint": "stars purple"
     },
     {
       "id": "amazon-logo",
@@ -32,8 +32,8 @@
     },
     {
       "id": "free-guide-cover",
-      "description": "A beautiful artistic image of a woman with purple flowers.",
-      "imageUrl": "https://picsum.photos/seed/woman-flowers/1080/1350",
+      "description": "Artistic rendering of a woman's face with purple flowers.",
+      "imageUrl": "https://picsum.photos/seed/woman-flowers-art/1080/1350",
       "imageHint": "woman flowers"
     },
     {
