@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "A beautiful image of a starry sky with a purple aurora.",
-      "imageUrl": "https://picsum.photos/seed/aurora/1920/1080",
-      "imageHint": "aurora sky"
+      "description": "A beautiful flatlay of lavender and cosmetic products.",
+      "imageUrl": "https://picsum.photos/seed/lavender-beauty/1920/1080",
+      "imageHint": "lavender cosmetics"
     },
     {
       "id": "amazon-logo",
@@ -32,9 +32,9 @@
     },
     {
       "id": "free-guide-cover",
-      "description": "A beautiful flatlay image with a lavender theme for the free guide cover.",
-      "imageUrl": "https://picsum.photos/seed/lavender/1080/1350",
-      "imageHint": "lavender flatlay"
+      "description": "A beautiful artistic image of a woman with purple flowers.",
+      "imageUrl": "https://picsum.photos/seed/woman-flowers/1080/1350",
+      "imageHint": "woman flowers"
     },
     {
       "id": "trust-badge-1",
