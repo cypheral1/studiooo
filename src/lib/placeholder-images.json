@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "A beautiful and aesthetic image with a purple and lavender color scheme.",
-      "imageUrl": "https://picsum.photos/seed/401/1920/1080",
-      "imageHint": "purple aesthetic"
+      "description": "A beautiful image of a starry sky with a purple aurora.",
+      "imageUrl": "https://picsum.photos/seed/aurora/1920/1080",
+      "imageHint": "aurora sky"
     },
     {
       "id": "amazon-logo",
@@ -33,7 +33,7 @@
     {
       "id": "free-guide-cover",
       "description": "A beautiful flatlay image with a lavender theme for the free guide cover.",
-      "imageUrl": "https://picsum.photos/seed/402/1080/1350",
+      "imageUrl": "https://picsum.photos/seed/lavender/1080/1350",
       "imageHint": "lavender flatlay"
     },
     {
