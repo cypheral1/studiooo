@@ -1,10 +1,41 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Twitter, Instagram, Facebook } from 'lucide-react';
+import { ShieldCheck, Twitter, Instagram, Facebook, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Container } from '@/components/container';
+import { useToast } from '@/hooks/use-toast';
 
 export function Footer() {
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'Footer Newsletter' })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast({ title: 'Subscribed!', description: 'Thanks for joining our newsletter.' });
+        setEmail('');
+      } else {
+        toast({ variant: 'destructive', title: 'Error', description: data.error || data.message || 'Failed to subscribe.' });
+      }
+    } catch (err) {
+      toast({ variant: 'destructive', title: 'Error', description: 'Failed to subscribe.' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <footer className="bg-secondary">
       <Container className="py-16">
@@ -41,7 +72,7 @@ export function Footer() {
               <li><Link href="#verification" className="text-secondary-foreground/80 hover:text-primary">Verify</Link></li>
             </ul>
           </div>
-          
+
           <div className="md:col-span-2">
             <h3 className="font-headline font-semibold text-secondary-foreground">Legal</h3>
             <ul className="mt-4 space-y-2">
@@ -56,9 +87,18 @@ export function Footer() {
             <p className="mt-4 text-secondary-foreground/80">
               Get our free guide and updates on authentic products.
             </p>
-            <form className="mt-4 flex gap-2">
-              <Input type="email" placeholder="Enter your email" className="bg-background" />
-              <Button type="submit">Subscribe</Button>
+            <form onSubmit={handleSubscribe} className="mt-4 flex gap-2">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                className="bg-background"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Subscribe'}
+              </Button>
             </form>
           </div>
         </div>

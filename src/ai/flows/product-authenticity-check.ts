@@ -46,10 +46,20 @@ export type ProductAuthenticityCheckOutput = z.infer<
   typeof ProductAuthenticityCheckOutputSchema
 >;
 
+import { saveVerification } from '@/controllers/verificationController';
+
 export async function productAuthenticityCheck(
   input: ProductAuthenticityCheckInput
 ): Promise<ProductAuthenticityCheckOutput> {
-  return productAuthenticityCheckFlow(input);
+  const result = await productAuthenticityCheckFlow(input);
+
+  try {
+    await saveVerification(input, result);
+  } catch (error) {
+    console.error('Failed to save to Supabase:', error);
+  }
+
+  return result;
 }
 
 const authenticityCheckPrompt = ai.definePrompt({
