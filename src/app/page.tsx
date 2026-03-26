@@ -5,6 +5,8 @@ import { WhereToBuy } from "@/components/sections/where-to-buy";
 import { FreeGuide } from "@/components/sections/free-guide";
 import { Faq } from "@/components/sections/faq";
 import { VerificationSection } from "@/components/sections/verification";
+import { VideoShowcase } from "@/components/sections/video-showcase";
+import { TrendingNow } from "@/components/sections/trending-now";
 
 export default function Home() {
   return (
@@ -12,8 +14,10 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
+        <VideoShowcase />
         <WhereToBuy />
         <FreeGuide />
+        <TrendingNow />
         <Faq />
         <VerificationSection />
       </main>
