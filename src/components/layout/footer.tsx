@@ -66,10 +66,12 @@ export function Footer() {
           <div className="md:col-span-2">
             <h3 className="font-headline font-semibold text-secondary-foreground">Quick Links</h3>
             <ul className="mt-4 space-y-2">
-              <li><Link href="#home" className="text-secondary-foreground/80 hover:text-primary">Home</Link></li>
-              <li><Link href="#where-to-buy" className="text-secondary-foreground/80 hover:text-primary">Where to Buy</Link></li>
-              <li><Link href="#faq" className="text-secondary-foreground/80 hover:text-primary">FAQ</Link></li>
-              <li><Link href="#verification" className="text-secondary-foreground/80 hover:text-primary">Verify</Link></li>
+              <li><Link href="/" className="text-secondary-foreground/80 hover:text-primary">Home</Link></li>
+              <li><Link href="/fake-vs-original" className="text-secondary-foreground/80 hover:text-primary">Fake vs Original</Link></li>
+              <li><Link href="/where-to-buy-original" className="text-secondary-foreground/80 hover:text-primary">Where to Buy</Link></li>
+              <li><Link href="/detection-guide" className="text-secondary-foreground/80 hover:text-primary">Detection Guide</Link></li>
+              <li><Link href="/product-comparisons" className="text-secondary-foreground/80 hover:text-primary">Comparisons</Link></li>
+              <li><Link href="/verification-tools" className="text-secondary-foreground/80 hover:text-primary">Verification Tools</Link></li>
             </ul>
           </div>
 
