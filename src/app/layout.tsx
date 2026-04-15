@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import './globals.css';
 import { cn } from '@/lib/utils';
+import { VapiAssistant } from "@/components/vapi-assistant";
 
 export const metadata: Metadata = {
   title: 'TrueOriginalShop',
@@ -22,6 +23,7 @@ export default function RootLayout({
       </head>
       <body className={cn("font-body antialiased")}>
         {children}
+        <VapiAssistant />
         <Toaster />
       </body>
     </html>
