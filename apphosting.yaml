@@ -5,3 +5,13 @@ runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+
+env:
+  - key: NEXT_PUBLIC_VAPI_PUBLIC_KEY
+    value: b6bdba60-eb61-4146-9b7a-994561bd0fde
+  - key: NEXT_PUBLIC_VAPI_ASSISTANT_ID
+    value: 84635946-5f50-4d93-9b6d-1101fb2098a0
+  - key: NEXT_PUBLIC_SUPABASE_URL
+    value: https://sggmrgvbdtukrqvuekux.supabase.co
+  - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnZ21yZ3ZiZHR1a3JxdnVla3V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MjY2MzIsImV4cCI6MjA4ODMwMjYzMn0.9SUfWSIaLbzEfEX5-2HtWipBpO4XKdinRAEfB7sznE8

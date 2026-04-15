@@ -5,12 +5,13 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Container } from '@/components/container';
+import { HelpCircle } from 'lucide-react';
 
 const faqs = [
   {
     question: 'How do I verify my cosmetic product?',
     answer:
-      'Simply navigate to the "Upload & Check" section, upload a clear photo of your product, a picture of its barcode, and enter the batch code found on the packaging. Our AI system will analyze the data and provide an authenticity report.',
+      'Simply go to the "Verify Product" section, upload a clear photo of your product, a picture of its barcode, and enter the batch code from the packaging. Our AI system will analyze the data and provide an authenticity report within 30 seconds!',
   },
   {
     question: 'How long does verification take?',
@@ -25,28 +26,40 @@ const faqs = [
   {
     question: 'Is the TrueOriginalShop verification service free?',
     answer:
-      'Yes, our basic product verification service is completely free to use. We believe everyone has the right to know if their products are safe and authentic.',
+      'Yes! Our product verification service is completely free to use. We believe everyone has the right to know if their products are safe and authentic. No hidden charges, no premium tier — just free verification.',
   },
 ];
 
 export function Faq() {
   return (
-    <section id="faq" className="py-24 sm:py-32 bg-secondary">
+    <section id="faq" className="py-16 sm:py-24 bg-black/60 backdrop-blur-sm relative border-y border-primary/20">
       <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-headline text-4xl font-bold tracking-tight text-secondary-foreground sm:text-5xl">
-            Frequently Asked Questions
+        <div className="mx-auto max-w-2xl text-center mb-12">
+          <span className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4 border border-primary/30 uppercase tracking-widest">
+            <HelpCircle className="h-3.5 w-3.5" />
+            Got Questions?
+          </span>
+          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl uppercase">
+            Frequently Asked <span className="text-primary">Questions</span>
           </h2>
-          <p className="mt-6 text-lg leading-8 text-secondary-foreground/80">
-            Have questions? We have answers. Here are some of the most common inquiries we receive.
+          <p className="mt-4 text-white/70">
+            Everything you need to know about our verification process.
           </p>
         </div>
-        <div className="mt-16 mx-auto max-w-4xl">
-          <Accordion type="single" collapsible className="w-full">
+        <div className="mx-auto max-w-3xl">
+          <Accordion type="single" collapsible className="w-full space-y-3">
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left text-lg font-semibold">{faq.question}</AccordionTrigger>
-                <AccordionContent className="text-base text-secondary-foreground/80">{faq.answer}</AccordionContent>
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="bg-black/50 border border-primary/20 rounded-2xl px-6 shadow-[0_0_15px_rgba(0,0,0,0.5)] data-[state=open]:border-primary/50 transition-all backdrop-blur-md"
+              >
+                <AccordionTrigger className="text-left text-sm font-semibold text-white/90 hover:no-underline py-5 hover:text-primary transition-colors tracking-wide">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-white/60 leading-relaxed pb-5">
+                  {faq.answer}
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
