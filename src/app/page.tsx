@@ -1,27 +1,21 @@
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { Hero } from "@/components/sections/hero";
-import { WhereToBuy } from "@/components/sections/where-to-buy";
-import { FreeGuide } from "@/components/sections/free-guide";
-import { Faq } from "@/components/sections/faq";
-import { VerificationSection } from "@/components/sections/verification";
-import { VideoShowcase } from "@/components/sections/video-showcase";
-import { TrendingNow } from "@/components/sections/trending-now";
+import { CinematicNav } from '@/components/cinematic/nav';
+import { CinematicHero } from '@/components/cinematic/hero';
+import { HowItWorks } from '@/components/cinematic/how-it-works';
+import { CaseStudies } from '@/components/cinematic/case-studies';
+import { PricingSection } from '@/components/cinematic/pricing';
+import { CinematicFooter } from '@/components/cinematic/footer';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col bg-transparent text-foreground">
-      <Header />
-      <main className="flex-1">
-        <Hero />
-        <VideoShowcase />
-        <WhereToBuy />
-        <FreeGuide />
-        <TrendingNow />
-        <Faq />
-        <VerificationSection />
+    <div className="min-h-screen" style={{ background: 'var(--cinematic-bg)' }}>
+      <CinematicNav />
+      <main>
+        <CinematicHero />
+        <HowItWorks />
+        <CaseStudies />
+        <PricingSection />
       </main>
-      <Footer />
+      <CinematicFooter />
     </div>
   );
 }
