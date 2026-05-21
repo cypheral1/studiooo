@@ -8,39 +8,39 @@
 
 @layer base {
   :root {
-    --background: 0 0% 2%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 100%;
+    --background: 280 40% 95%;
+    --foreground: 260 50% 5%;
+    --card: 0 0% 100% / 0.45;
+    --card-foreground: 260 50% 5%;
+    --popover: 0 0% 100% / 0.45;
+    --popover-foreground: 260 50% 5%;
     --primary: 189 96% 43%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 7%;
-    --secondary-foreground: 0 0% 60%;
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 60%;
+    --secondary: 0 0% 100% / 0.2;
+    --secondary-foreground: 260 10% 20%;
+    --muted: 260 20% 95%;
+    --muted-foreground: 260 10% 40%;
     --accent: 330 81% 60%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 35%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 100% / 0.1;
-    --input: 0 0% 15%;
+    --border: 0 0% 0% / 0.08;
+    --input: 260 20% 95%;
     --ring: 189 96% 43%;
     --radius: 0.75rem;
 
-    /* Cinematic tokens */
-    --cinematic-bg: #050505;
-    --cinematic-card: #111111;
-    --cinematic-cyan: #06B6D4;
-    --cinematic-pink: #EC4899;
-    --cinematic-purple: #7C3AED;
-    --cinematic-text: #FFFFFF;
-    --cinematic-text-secondary: #999999;
-    --cinematic-border: rgba(255, 255, 255, 0.1);
-    --cinematic-glass: rgba(255, 255, 255, 0.05);
-    --cinematic-pricing-bg: #0B0216;
-    --cinematic-pricing-card: #1A0B2E;
+    /* Cinematic tokens using the requested pastel gradient palette but restoring previous cyan/pink accents */
+    --cinematic-bg: linear-gradient(135deg, #DBB2D1, #D7B4F3, #E6E6FA, #FFD1DC, #E6D5FF, #DCD0FF);
+    --cinematic-card: rgba(255, 255, 255, 0.45); /* Light glass surface */
+    --cinematic-cyan: #06B6D4; /* Restored previous accent Cyan */
+    --cinematic-pink: #EC4899; /* Restored previous accent Pink */
+    --cinematic-purple: #7C3AED; /* Restored previous accent Purple */
+    --cinematic-text: #120E16; /* Deep dark purple-grey for readability */
+    --cinematic-text-secondary: #5A4E65; /* Sophisticated dark secondary text */
+    --cinematic-border: rgba(0, 0, 0, 0.08); /* Soft dark border for glassmorphism */
+    --cinematic-glass: rgba(255, 255, 255, 0.3); /* Frosted glass */
+    --cinematic-pricing-bg: linear-gradient(135deg, #E6D5FF, #DCD0FF, #E6E6FA);
+    --cinematic-pricing-card: rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -55,16 +55,17 @@
   }
   body {
     background: var(--cinematic-bg);
+    background-attachment: fixed; /* Keep background fixed for an ultra-premium scrolling feel */
     color: var(--cinematic-text);
     font-family: 'Aspekta', 'Inter', system-ui, -apple-system, sans-serif;
-    font-weight: 300;
+    font-weight: 400; /* Increased font weight for optimal legibility over light gradients */
     font-size: 1.125rem;
     line-height: 1.7;
     overflow-x: hidden;
   }
   ::selection {
-    background: rgba(6, 182, 212, 0.3);
-    color: #fff;
+    background: rgba(6, 182, 212, 0.2);
+    color: #000;
   }
 }
 
@@ -103,7 +104,7 @@
 }
 
 .glass-card {
-  background: rgba(17, 17, 17, 0.6);
+  background: var(--cinematic-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--cinematic-border);
@@ -115,17 +116,18 @@
   background: linear-gradient(to right, var(--cinematic-cyan), var(--cinematic-pink));
   color: #fff;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 1rem 2.5rem;
   border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   font-size: 0.875rem;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.15);
 }
 .btn-gradient:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 30px rgba(6, 182, 212, 0.3), 0 0 60px rgba(236, 72, 153, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
 }
 
 /* ═══ 3D Cube ═══ */
@@ -187,8 +189,11 @@
   left: 0;
   right: 0;
   z-index: 100;
-  mix-blend-mode: difference;
-  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 1.25rem 2rem;
   transition: all 0.3s ease;
 }
 

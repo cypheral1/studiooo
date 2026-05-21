@@ -60,7 +60,7 @@ export function HowItWorks() {
           <h2 className="text-section">
             HOW IT
             <br />
-            <span style={{ WebkitTextStroke: '2px white', color: 'transparent' }}>
+            <span>
               WORKS
             </span>
           </h2>

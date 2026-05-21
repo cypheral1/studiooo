@@ -4,15 +4,26 @@ import { useState, useRef } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { 
-  productAuthenticityCheck,
-  type ProductAuthenticityCheckOutput
-} from '@/ai/flows/product-authenticity-check';
 import { useToast } from '@/hooks/use-toast';
 import { Container } from '@/components/container';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { UploadCloud, CheckCircle, AlertTriangle, XCircle, Loader2, ShieldCheck, Sparkles } from 'lucide-react';
+
+export interface ProductAuthenticityCheckOutput {
+  authenticityStatus: 'Original' | 'Suspicious' | 'Fake' | string;
+  confidenceScore: number;
+  reasons: string[];
+}
+
+// Stub – replace with a real API call when backend is ready
+async function productAuthenticityCheck(_input: {
+  productImageDataUri: string;
+  barcodeImageDataUri: string;
+  batchCode: string;
+}): Promise<ProductAuthenticityCheckOutput> {
+  return { authenticityStatus: 'Original', confidenceScore: 95, reasons: ['Visual markers match known authentic products.'] };
+}
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];

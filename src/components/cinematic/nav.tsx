@@ -56,16 +56,16 @@ export function CinematicNav() {
             id="mobile-menu-toggle"
             aria-label="Toggle menu"
           >
-            <span className={`block w-6 h-[2px] bg-white transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
-            <span className={`block w-6 h-[2px] bg-white transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
-            <span className={`block w-6 h-[2px] bg-white transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
+            <span className={`block w-6 h-[2px] bg-current transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[5px]' : ''}`} />
+            <span className={`block w-6 h-[2px] bg-current transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
+            <span className={`block w-6 h-[2px] bg-current transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[5px]' : ''}`} />
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden mt-6 pb-6 border-t border-white/10 pt-6 animate-fade-in">
+        <div className="md:hidden mt-6 pb-6 border-t border-black/10 pt-6 animate-fade-in">
           <div className="flex flex-col gap-6">
             {navLinks.map((link) => (
               <a

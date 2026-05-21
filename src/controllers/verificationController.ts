@@ -1,5 +1,10 @@
 import { supabase } from '@/config/supabase';
-import { ProductAuthenticityCheckOutput } from '@/ai/flows/product-authenticity-check';
+
+export interface ProductAuthenticityCheckOutput {
+  authenticityStatus: 'Original' | 'Suspicious' | 'Fake' | string;
+  confidenceScore: number;
+  reasons: string[];
+}
 
 export const saveVerification = async (
     inputData: any,
