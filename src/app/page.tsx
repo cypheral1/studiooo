@@ -5,6 +5,8 @@ import { CaseStudies } from '@/components/cinematic/case-studies';
 import { CinematicFreeGuide } from '@/components/cinematic/free-guide';
 import { CinematicFooter } from '@/components/cinematic/footer';
 
+export const revalidate = 3600;
+
 export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--cinematic-bg)' }}>

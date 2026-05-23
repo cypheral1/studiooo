@@ -148,7 +148,13 @@ export function CaseStudies() {
           <h2 className="text-section">
             CASE
             <br />
-            <span style={{ WebkitTextStroke: '2px white', color: 'transparent' }}>
+            <span
+              style={{
+                background: 'linear-gradient(to right, var(--cinematic-cyan), var(--cinematic-pink))',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
               STUDIES
             </span>
           </h2>
@@ -223,8 +229,8 @@ export function CaseStudies() {
             <div
               className={`w-14 h-14 flex items-center justify-center border transition-all duration-300 ${
                 hoveredId === featured.id
-                  ? 'bg-white text-black border-white'
-                  : 'border-white/30 text-white'
+                  ? 'bg-[var(--cinematic-text)] text-white border-[var(--cinematic-text)]'
+                  : 'border-[var(--cinematic-text)]/30 text-[var(--cinematic-text)]'
               }`}
             >
               <svg

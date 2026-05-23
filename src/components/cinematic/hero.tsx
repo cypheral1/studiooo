@@ -15,7 +15,7 @@ export function CinematicHero() {
         <span
           className="text-hero"
           style={{
-            color: 'rgba(255, 255, 255, 0.03)',
+            color: 'rgba(18, 14, 22, 0.05)',
             fontSize: '20vw',
             whiteSpace: 'nowrap',
           }}
@@ -103,7 +103,7 @@ export function CinematicHero() {
         <span className="text-label text-xs" style={{ color: 'var(--cinematic-text-secondary)' }}>
           SCROLL
         </span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-white/50 to-transparent animate-float" />
+        <div className="w-[1px] h-12 bg-gradient-to-b from-[var(--cinematic-text)]/40 to-transparent animate-float" />
       </div>
 
       {/* Side text */}

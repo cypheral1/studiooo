@@ -82,7 +82,7 @@ export function HowItWorks() {
               {/* Step Number */}
               <span
                 className="text-8xl font-black absolute top-6 right-6 select-none pointer-events-none"
-                style={{ color: 'rgba(255,255,255,0.03)' }}
+                style={{ color: 'rgba(18, 14, 22, 0.06)' }}
               >
                 {step.number}
               </span>

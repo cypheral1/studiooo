@@ -96,7 +96,7 @@ export function CinematicFooter() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-sm hover:text-white transition-colors duration-200"
+                    className="text-sm hover:opacity-100 transition-colors duration-200"
                     style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}
                   >
                     {link.label}
@@ -116,7 +116,7 @@ export function CinematicFooter() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-sm hover:text-white transition-colors duration-200"
+                    className="text-sm hover:opacity-100 transition-colors duration-200"
                     style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}
                   >
                     {link.label}
@@ -136,7 +136,7 @@ export function CinematicFooter() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-sm hover:text-white transition-colors duration-200"
+                    className="text-sm hover:opacity-100 transition-colors duration-200"
                     style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}
                   >
                     {link.label}
@@ -162,7 +162,7 @@ export function CinematicFooter() {
               <a
                 key={social}
                 href="#"
-                className="text-xs hover:text-white transition-colors duration-200"
+                className="text-xs hover:opacity-100 transition-colors duration-200"
                 style={{ color: 'var(--cinematic-text-secondary)' }}
               >
                 {social}
