@@ -122,6 +122,7 @@ export function VapiAssistant() {
 
         {/* Button */}
         <button
+          id="vapi-assistant-button"
           onClick={toggleCall}
           disabled={isConnecting}
           className={`relative flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all duration-300 cursor-pointer

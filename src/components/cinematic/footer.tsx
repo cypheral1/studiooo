@@ -4,7 +4,7 @@ export function CinematicFooter() {
   const footerLinks = {
     product: [
       { label: 'How It Works', href: '#how-it-works' },
-      { label: 'Pricing', href: '#pricing' },
+      { label: 'Free Guide', href: '#free-guide' },
       { label: 'API Docs', href: '#' },
       { label: 'Case Studies', href: '#case-studies' },
     ],

@@ -9,7 +9,7 @@ export function CinematicNav() {
   const navLinks = [
     { label: 'HOW IT WORKS', href: '#how-it-works' },
     { label: 'CASE STUDIES', href: '#case-studies' },
-    { label: 'PRICING', href: '#pricing' },
+    { label: 'FREE GUIDE', href: '#free-guide' },
     { label: 'CONTACT', href: '#contact' },
   ];
 
@@ -41,12 +41,12 @@ export function CinematicNav() {
         {/* CTA Button */}
         <div className="flex items-center gap-4">
           <a
-            href="#pricing"
+            href="#free-guide"
             className="hidden sm:inline-block btn-gradient text-xs py-3 px-6"
             id="nav-cta"
             style={{ borderRadius: '0' }}
           >
-            VERIFY NOW
+            FREE GUIDE
           </a>
 
           {/* Mobile Menu Button */}
@@ -78,12 +78,12 @@ export function CinematicNav() {
               </a>
             ))}
             <a
-              href="#pricing"
+              href="#free-guide"
               className="btn-gradient text-xs py-3 px-6 text-center"
               onClick={() => setMobileOpen(false)}
               style={{ borderRadius: '0' }}
             >
-              VERIFY NOW
+              FREE GUIDE
             </a>
           </div>
         </div>

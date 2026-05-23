@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { VapiAssistant } from '@/components/vapi-assistant';
 
 export const metadata: Metadata = {
   title: 'TrueOriginal — Cosmetic Quality Assurance',
@@ -23,6 +24,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
+        <VapiAssistant />
       </body>
     </html>
   );
