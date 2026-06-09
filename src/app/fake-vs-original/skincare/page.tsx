@@ -1,49 +1,65 @@
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { Container } from "@/components/container";
-import { Scale } from "lucide-react";
-import type { Metadata } from "next";
+import { CinematicNav } from '@/components/cinematic/nav';
+import { CinematicFooter } from '@/components/cinematic/footer';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Fake vs Original Skincare | TrueOriginalShop",
-  description: "Learn how to spot fake skincare products with our comprehensive guides.",
+  title: 'Fake vs Original Skincare | TrueOriginalShop',
+  description: 'Simple guide on identifying authentic skincare products.',
 };
 
 export default function SkincareGuidePage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <Header />
-      <main className="flex-1">
-        <section className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
-          <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 via-background to-pink-500/5" />
-          <Container className="relative">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-rose-500/20 bg-rose-500/10 px-4 py-1.5 text-sm font-medium text-rose-600 dark:text-rose-400">
-                <Scale className="h-4 w-4" />
-                Skincare Guide
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--cinematic-bg)' }}>
+      <CinematicNav />
+      <main className="flex-1 flex flex-col relative overflow-hidden" style={{ paddingTop: '120px' }}>
+         <div className="px-6 md:px-12 py-16 md:py-24 max-w-[90rem] mx-auto w-full relative z-10">
+            <span className="text-label text-xs block mb-4" style={{ color: 'var(--cinematic-cyan)' }}>
+              AUTHENTICITY GUIDE
+            </span>
+            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-[0.95] mb-8">
+              FAKE VS ORIGINAL
+              <br />
+              <span
+                style={{
+                  background: 'linear-gradient(to right, var(--cinematic-cyan), var(--cinematic-pink))',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                SKINCARE.
+              </span>
+            </h1>
+            
+            <div className="max-w-3xl text-base md:text-lg space-y-8" style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}>
+              <div>
+                <h3 className="text-xl font-bold mb-3 text-white">1. Check the Packaging</h3>
+                <p>Authentic skincare products usually have high-quality packaging with precise typography, correct spelling, and consistent coloring. Fake products often feature flimsy materials, blurred text, or subtle misspellings.</p>
               </div>
-              <h1 className="font-headline text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-                Fake vs Original{" "}
-                <span className="bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
-                  Skincare
-                </span>
-              </h1>
-              <p className="mt-6 text-lg leading-8 text-foreground/70 sm:text-xl">
-                Comprehensive comparison guides to help you identify authentic skincare products from counterfeit ones.
-              </p>
+              
+              <div>
+                <h3 className="text-xl font-bold mb-3 text-white">2. Verify the Batch Code</h3>
+                <p>Genuine items have a printed or stamped batch code that matches on both the box and the container. Counterfeits might lack this entirely or use fake codes that don&apos;t verify on standard checker websites.</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold mb-3 text-white">3. Texture and Scent</h3>
+                <p>Original skincare formulas are carefully balanced. If a lotion feels overly watery, excessively greasy, or has a strong chemical odor unlike the authentic product, it is likely a fake.</p>
+              </div>
+              
+              <div>
+                <h3 className="text-xl font-bold mb-3 text-white">4. Price Tag</h3>
+                <p>If the deal seems too good to be true, it usually is. Heavy discounts on premium skincare from unverified sellers are a massive red flag.</p>
+              </div>
             </div>
-          </Container>
-        </section>
-        
-        <section className="py-20">
-          <Container>
-            <div className="text-center text-foreground/60 py-12">
-              <p>Content coming soon. Stay tuned for detailed comparisons of popular skincare brands.</p>
-            </div>
-          </Container>
-        </section>
+         </div>
+         
+         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0" aria-hidden="true">
+            <span className="text-hero opacity-5" style={{ fontSize: '15vw', whiteSpace: 'nowrap' }}>
+              SKINCARE
+            </span>
+         </div>
       </main>
-      <Footer />
+      <CinematicFooter />
     </div>
   );
 }
