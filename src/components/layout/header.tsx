@@ -5,18 +5,30 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Menu, X, ShieldCheck, Search, ChevronDown,
-  Scale, Store, BookOpen, GitCompareArrows, Wrench, Sparkles
+  Scale, Store, BookOpen, GitCompareArrows, Wrench, Sparkles, Newspaper
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 
 const categoryItems = [
-  { name: 'Fake vs Original', href: '/fake-vs-original', icon: Scale, color: 'text-rose-500 bg-rose-50' },
+  { 
+    name: 'Fake vs Original', 
+    href: '/fake-vs-original', 
+    icon: Scale, 
+    color: 'text-rose-500 bg-rose-50',
+    subcategories: [
+      { name: 'Skincare', href: '/fake-vs-original/skincare' },
+      { name: 'Sunscream', href: '/fake-vs-original/sunscream' },
+      { name: 'Serum', href: '/fake-vs-original/serum' },
+      { name: 'Makeup', href: '/fake-vs-original/makeup' },
+    ]
+  },
   { name: 'Where to Buy', href: '/where-to-buy-original', icon: Store, color: 'text-emerald-500 bg-emerald-50' },
   { name: 'Detection Guide', href: '/detection-guide', icon: BookOpen, color: 'text-blue-500 bg-blue-50' },
   { name: 'Comparisons', href: '/product-comparisons', icon: GitCompareArrows, color: 'text-purple-500 bg-purple-50' },
   { name: 'Verification Tools', href: '/verification-tools', icon: Wrench, color: 'text-amber-500 bg-amber-50' },
+  { name: 'Blog', href: '/blog', icon: Newspaper, color: 'text-indigo-500 bg-indigo-50' },
 ];
 
 export function Header() {
@@ -130,22 +142,40 @@ export function Header() {
                       const Icon = item.icon;
                       const isActive = pathname === item.href;
                       return (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className={cn(
-                            'flex items-center gap-3 p-3 rounded-xl transition-colors',
-                            isActive ? 'bg-primary/10' : 'hover:bg-white/5'
+                        <div key={item.name}>
+                          <Link
+                            href={item.href}
+                            className={cn(
+                              'flex items-center gap-3 p-3 rounded-xl transition-colors',
+                              isActive ? 'bg-primary/10' : 'hover:bg-white/5'
+                            )}
+                            onClick={() => setDropdownOpen(false)}
+                          >
+                            <div className={cn('flex h-10 w-10 items-center justify-center rounded-xl bg-black/50 border border-primary/20 text-primary')}>
+                              <Icon className="h-5 w-5" />
+                            </div>
+                            <span className={cn('text-sm font-medium', isActive ? 'text-primary' : 'text-white/90')}>
+                              {item.name}
+                            </span>
+                          </Link>
+                          {item.subcategories && (
+                            <div className="pl-14 pr-3 pb-2 flex flex-col gap-1">
+                              {item.subcategories.map(sub => (
+                                <Link
+                                  key={sub.name}
+                                  href={sub.href}
+                                  className={cn(
+                                    'text-sm px-3 py-1.5 rounded-lg transition-colors',
+                                    pathname === sub.href ? 'text-primary bg-primary/5' : 'text-white/70 hover:text-white hover:bg-white/5'
+                                  )}
+                                  onClick={() => setDropdownOpen(false)}
+                                >
+                                  {sub.name}
+                                </Link>
+                              ))}
+                            </div>
                           )}
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          <div className={cn('flex h-10 w-10 items-center justify-center rounded-xl bg-black/50 border border-primary/20 text-primary')}>
-                            <Icon className="h-5 w-5" />
-                          </div>
-                          <span className={cn('text-sm font-medium', isActive ? 'text-primary' : 'text-white/90')}>
-                            {item.name}
-                          </span>
-                        </Link>
+                        </div>
                       );
                     })}
                   </div>
@@ -208,20 +238,38 @@ export function Header() {
                           const Icon = item.icon;
                           const isActive = pathname === item.href;
                           return (
-                            <Link
-                              key={item.name}
-                              href={item.href}
-                              className={cn(
-                                'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors',
-                                isActive ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'
+                            <div key={item.name} className="flex flex-col">
+                              <Link
+                                href={item.href}
+                                className={cn(
+                                  'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors',
+                                  isActive ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:bg-muted'
+                                )}
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                <div className={cn('flex h-8 w-8 items-center justify-center rounded-lg', item.color)}>
+                                  <Icon className="h-4 w-4" />
+                                </div>
+                                {item.name}
+                              </Link>
+                              {item.subcategories && (
+                                <div className="pl-14 pr-4 flex flex-col gap-1 pb-2">
+                                  {item.subcategories.map(sub => (
+                                    <Link
+                                      key={sub.name}
+                                      href={sub.href}
+                                      className={cn(
+                                        'text-sm px-4 py-2 rounded-lg transition-colors',
+                                        pathname === sub.href ? 'text-primary bg-primary/5' : 'text-foreground/60 hover:text-foreground hover:bg-muted'
+                                      )}
+                                      onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                      {sub.name}
+                                    </Link>
+                                  ))}
+                                </div>
                               )}
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              <div className={cn('flex h-8 w-8 items-center justify-center rounded-lg', item.color)}>
-                                <Icon className="h-4 w-4" />
-                              </div>
-                              {item.name}
-                            </Link>
+                            </div>
                           );
                         })}
                       </nav>
