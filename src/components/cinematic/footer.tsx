@@ -5,20 +5,17 @@ export function CinematicFooter() {
     product: [
       { label: 'How It Works', href: '#how-it-works' },
       { label: 'Free Guide', href: '#free-guide' },
-      { label: 'API Docs', href: '#' },
       { label: 'Case Studies', href: '#case-studies' },
     ],
     company: [
       { label: 'About', href: '#' },
       { label: 'Blog', href: '#' },
       { label: 'Careers', href: '#' },
-      { label: 'Press Kit', href: '#' },
     ],
     legal: [
       { label: 'Privacy Policy', href: '#' },
       { label: 'Terms of Service', href: '#' },
       { label: 'Cookie Policy', href: '#' },
-      { label: 'GDPR', href: '#' },
     ],
   };
 

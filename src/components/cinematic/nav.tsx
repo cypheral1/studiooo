@@ -1,10 +1,50 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function CinematicNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeLang, setActiveLang] = useState('EN');
+  const [langExpanded, setLangExpanded] = useState(false);
+
+  const languages = [
+    { code: 'EN', name: 'English' },
+    { code: 'FA', name: 'Persian' },
+    { code: 'AR', name: 'Arabic' }
+  ];
+
+  useEffect(() => {
+    // Read Google Translate cookie on mount
+    const match = document.cookie.match(/googtrans=\/en\/([a-z]{2})/);
+    if (match && match[1]) {
+      const code = match[1].toUpperCase();
+      // Verify it's one of our supported languages
+      if (['EN', 'FA', 'AR'].includes(code)) {
+        setActiveLang(code);
+        if (code === 'AR' || code === 'FA') {
+          document.documentElement.dir = 'rtl';
+        } else {
+          document.documentElement.dir = 'ltr';
+        }
+      }
+    }
+  }, []);
+
+  const handleLangChange = (code: string) => {
+    const lowerCode = code.toLowerCase();
+    // Set the cookie for both paths and domains just to be sure
+    document.cookie = `googtrans=/en/${lowerCode}; path=/`;
+    document.cookie = `googtrans=/en/${lowerCode}; domain=${window.location.hostname}; path=/`;
+    
+    if (lowerCode === 'ar' || lowerCode === 'fa') {
+      document.documentElement.dir = 'rtl';
+    } else {
+      document.documentElement.dir = 'ltr';
+    }
+    
+    window.location.reload();
+  };
 
   const navLinks = [
     { label: 'HOW IT WORKS', href: '/#how-it-works' },
@@ -69,8 +109,44 @@ export function CinematicNav() {
           ))}
         </div>
 
-        {/* CTA Button */}
+        {/* Right Section: Language + CTA */}
         <div className="flex items-center gap-4">
+          
+          {/* Dynamic Island Language Selector */}
+          <div 
+            className="relative flex items-center justify-center bg-black text-white rounded-[24px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.15)] z-50"
+            style={{
+              height: '36px',
+              width: langExpanded ? '140px' : '56px',
+            }}
+            onMouseEnter={() => setLangExpanded(true)}
+            onMouseLeave={() => setLangExpanded(false)}
+            onClick={() => setLangExpanded(!langExpanded)}
+          >
+            {/* Collapsed State */}
+            <div className={`absolute flex items-center justify-center w-full h-full transition-all duration-300 ${langExpanded ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}>
+              <span className="text-[11px] font-bold tracking-widest">{activeLang}</span>
+            </div>
+            
+            {/* Expanded State */}
+            <div className={`absolute flex items-center justify-between w-full h-full px-4 transition-all duration-400 delay-75 ${langExpanded ? 'opacity-100 scale-100' : 'opacity-0 scale-110 pointer-events-none'}`}>
+              {languages.map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    setLangExpanded(false);
+                    handleLangChange(lang.code);
+                  }}
+                  title={lang.name}
+                  className={`text-[10px] font-bold tracking-widest transition-all duration-200 hover:scale-110 ${activeLang === lang.code ? 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]' : 'text-white/40 hover:text-white/90'}`}
+                >
+                  {lang.code}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <a
             href="/#free-guide"
             className="hidden sm:inline-block btn-gradient text-xs py-3 px-6"
@@ -82,7 +158,7 @@ export function CinematicNav() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden flex flex-col gap-1.5 p-2"
+            className="md:hidden flex flex-col gap-1.5 p-2 z-50"
             onClick={() => setMobileOpen(!mobileOpen)}
             id="mobile-menu-toggle"
             aria-label="Toggle menu"
@@ -96,7 +172,7 @@ export function CinematicNav() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden mt-6 pb-6 border-t border-black/10 pt-6 animate-fade-in relative z-50">
+        <div className="md:hidden mt-6 pb-6 border-t border-black/10 pt-6 animate-fade-in relative z-40">
           <div className="flex flex-col gap-6">
             {navLinks.map((link) => (
               <div key={link.label} className="flex flex-col gap-3">

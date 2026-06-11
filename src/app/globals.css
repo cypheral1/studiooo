@@ -376,3 +376,9 @@
     font-size: 14vw;
   }
 }
+
+/* ═══ Google Translate Overrides ═══ */
+.VIpgJd-ZVi9od-ORHb-OEVmcd { display: none; }
+#goog-gt-tt { display: none !important; }
+.goog-te-banner-frame { display: none !important; }
+body { top: 0px !important; }
