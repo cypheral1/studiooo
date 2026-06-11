@@ -25,6 +25,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+      </head>
+      <body className={inter.className}>
         <Script
           id="google-translate-init"
           strategy="beforeInteractive"
@@ -44,8 +46,6 @@ export default function RootLayout({
           src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
           strategy="afterInteractive"
         />
-      </head>
-      <body className={inter.className}>
         <div id="google_translate_element" style={{ display: 'none' }}></div>
         {children}
         <VapiAssistant />
