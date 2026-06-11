@@ -107,7 +107,7 @@ export function VapiAssistant() {
       )}
 
       {/* Button with tooltip */}
-      <div className="group flex items-center">
+      <div className="group flex items-center gap-3">
         {/* Tooltip */}
         <div
           className={`mr-4 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 rounded-full shadow-lg border border-zinc-200 dark:border-zinc-700 text-sm font-medium whitespace-nowrap transition-all duration-300
@@ -120,7 +120,7 @@ export function VapiAssistant() {
           <div className="absolute w-2 h-2 bg-white dark:bg-zinc-800 transform rotate-45 border-r border-t border-zinc-200 dark:border-zinc-700 -right-1 top-1/2 -translate-y-1/2 z-0"></div>
         </div>
 
-        {/* Button */}
+        {/* AI assistant button */}
         <button
           id="vapi-assistant-button"
           onClick={toggleCall}
@@ -145,6 +145,17 @@ export function VapiAssistant() {
             <Mic className="w-6 h-6 text-white dark:text-black" />
           )}
         </button>
+
+        {/* WhatsApp button */}
+        <a
+          href="https://wa.me/971583093948?text=hi%2C%20i%20have%20a%20query%20--trueorginal"
+          target="_blank"
+          rel="noreferrer noopener"
+          className="relative flex items-center justify-center w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-2xl shadow-emerald-500/30 transition-transform duration-300 hover:scale-110"
+          aria-label="Contact us on WhatsApp"
+        >
+          <span className="text-base font-semibold">WA</span>
+        </a>
       </div>
     </div>
   );
