@@ -3,15 +3,17 @@
 import { useState } from 'react';
 import { CinematicNav } from '@/components/cinematic/nav';
 import { CinematicFooter } from '@/components/cinematic/footer';
+import Image from 'next/image';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-type Area = 'face' | 'body' | 'lips';
+type Area = 'face' | 'body' | 'lips' | 'eyes' | 'other';
 
 interface NavItem {
   id: string;
   label: string;
   emoji: string;
+  image: string;
 }
 
 interface SkinTypeItem {
@@ -36,30 +38,42 @@ interface ResultData {
 // ── Data ───────────────────────────────────────────────────────────────────
 
 const AREAS: NavItem[] = [
-  { id: 'face', label: 'Face', emoji: '🧖' },
-  { id: 'body', label: 'Body', emoji: '🫶' },
-  { id: 'lips', label: 'Lips', emoji: '💋' },
+  { id: 'face', label: 'Face', emoji: '🧖', image: '/images/skinfinder/face.png' },
+  { id: 'body', label: 'Body', emoji: '🫶', image: '/images/skinfinder/body.png' },
+  { id: 'lips', label: 'Lips', emoji: '💋', image: '/images/skinfinder/lips.png' },
+  { id: 'eyes', label: 'Eyes', emoji: '👁️', image: '/images/skinfinder/eyes.png' },
+  { id: 'other', label: 'Other', emoji: '✨', image: '/images/skinfinder/face.png' },
 ];
 
 const CONCERNS: Record<string, NavItem[]> = {
   face: [
-    { id: 'acne', label: 'Acne', emoji: '🔴' },
-    { id: 'darkspot', label: 'Dark Spots', emoji: '🌑' },
-    { id: 'redness', label: 'Redness', emoji: '🌸' },
-    { id: 'wrinkles', label: 'Wrinkles', emoji: '〰️' },
-    { id: 'dullness', label: 'Dullness', emoji: '☁️' },
+    { id: 'acne', label: 'Acne', emoji: '🔴', image: '/images/skinfinder/acne.png' },
+    { id: 'darkspot', label: 'Dark Spots', emoji: '🌑', image: '/images/skinfinder/darkspot.png' },
+    { id: 'redness', label: 'Redness', emoji: '🌸', image: '/images/skinfinder/acne.png' },
+    { id: 'wrinkles', label: 'Wrinkles', emoji: '〰️', image: '/images/skinfinder/eyes.png' },
+    { id: 'dullness', label: 'Dullness', emoji: '☁️', image: '/images/skinfinder/face.png' },
   ],
   body: [
-    { id: 'acne', label: 'Body Acne', emoji: '🔴' },
-    { id: 'darkspot', label: 'Dark Spots', emoji: '🌑' },
-    { id: 'dryness', label: 'Dryness', emoji: '🏜️' },
-    { id: 'stretch', label: 'Stretch Marks', emoji: '〰️' },
+    { id: 'acne', label: 'Body Acne', emoji: '🔴', image: '/images/skinfinder/acne.png' },
+    { id: 'darkspot', label: 'Dark Spots', emoji: '🌑', image: '/images/skinfinder/darkspot.png' },
+    { id: 'dryness', label: 'Dryness', emoji: '🏜️', image: '/images/skinfinder/body.png' },
+    { id: 'stretch', label: 'Stretch Marks', emoji: '〰️', image: '/images/skinfinder/body.png' },
   ],
   lips: [
-    { id: 'dryness', label: 'Dryness / Chapping', emoji: '🏜️' },
-    { id: 'darkspot', label: 'Dark Lips', emoji: '🌑' },
-    { id: 'lines', label: 'Fine Lines', emoji: '〰️' },
+    { id: 'dryness', label: 'Chapping', emoji: '🏜️', image: '/images/skinfinder/lips.png' },
+    { id: 'darkspot', label: 'Dark Lips', emoji: '🌑', image: '/images/skinfinder/lips.png' },
+    { id: 'lines', label: 'Fine Lines', emoji: '〰️', image: '/images/skinfinder/lips.png' },
   ],
+  eyes: [
+    { id: 'darkcircle', label: 'Dark Circles', emoji: '🐼', image: '/images/skinfinder/eyes.png' },
+    { id: 'puffiness', label: 'Puffiness', emoji: '🎈', image: '/images/skinfinder/eyes.png' },
+    { id: 'finelines', label: 'Crow\'s Feet', emoji: '〰️', image: '/images/skinfinder/eyes.png' },
+  ],
+  other: [
+    { id: 'texture', label: 'Uneven Texture', emoji: '🌒', image: '/images/skinfinder/face.png' },
+    { id: 'pores', label: 'Large Pores', emoji: '🕳️', image: '/images/skinfinder/acne.png' },
+    { id: 'sensitivity', label: 'Sensitivity', emoji: '🥺', image: '/images/skinfinder/darkspot.png' },
+  ]
 };
 
 const SKIN_TYPES: SkinTypeItem[] = [
@@ -97,33 +111,44 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
 function Chip({
   label,
   emoji,
+  image,
   selected,
   onClick,
 }: {
   label: string;
   emoji: string;
+  image?: string;
   selected: boolean;
   onClick: () => void;
 }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 px-5 py-3 text-sm font-bold tracking-wider uppercase transition-all duration-200"
+      className="group relative overflow-hidden flex flex-col items-center justify-center transition-all duration-300"
       style={{
+        width: '130px',
+        height: '130px',
         border: selected
           ? '2px solid var(--cinematic-cyan)'
-          : '2px solid rgba(0,0,0,0.1)',
+          : '2px solid rgba(255,255,255,0.1)',
         background: selected
           ? 'linear-gradient(135deg, rgba(6,182,212,0.12), rgba(236,72,153,0.08))'
           : 'var(--cinematic-card)',
         backdropFilter: 'blur(8px)',
         color: selected ? 'var(--cinematic-cyan)' : 'var(--cinematic-text)',
-        borderRadius: '0',
-        boxShadow: selected ? '0 0 20px rgba(6,182,212,0.2)' : 'none',
+        boxShadow: selected ? '0 0 20px rgba(6,182,212,0.2)' : '0 4px 20px rgba(0,0,0,0.1)',
+        borderRadius: '16px',
       }}
     >
-      <span>{emoji}</span>
-      <span>{label}</span>
+      {image && (
+        <div className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-300">
+          <img src={image} alt={label} className="w-full h-full object-cover" />
+        </div>
+      )}
+      <div className="relative z-10 flex flex-col items-center justify-center p-3 text-center">
+        <span className="text-3xl mb-2 drop-shadow-md">{emoji}</span>
+        <span className="text-[10px] font-black tracking-wider uppercase drop-shadow-md bg-black/40 text-white px-2 py-1 rounded-sm">{label}</span>
+      </div>
     </button>
   );
 }
@@ -135,6 +160,7 @@ export default function SkinFinderPage() {
   const [area, setArea] = useState<Area | null>(null);
   const [concern, setConcern] = useState<string | null>(null);
   const [skinType, setSkinType] = useState<string | null>(null);
+  const [customConcern, setCustomConcern] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ResultData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -143,6 +169,7 @@ export default function SkinFinderPage() {
     setStep(0);
     setArea(null);
     setConcern(null);
+    setCustomConcern('');
     setSkinType(null);
     setResult(null);
     setError(null);
@@ -160,7 +187,7 @@ export default function SkinFinderPage() {
       const response = await fetch('/api/skin-finder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ area, concern, skinType }),
+        body: JSON.stringify({ area, concern: concern === 'custom' ? customConcern : concern, skinType }),
       });
 
       const data = await response.json();
@@ -265,12 +292,13 @@ export default function SkinFinderPage() {
 
                 {/* Step 0 — Area */}
                 {step === 0 && (
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-4 justify-center md:justify-start">
                     {AREAS.map((a) => (
                       <Chip
                         key={a.id}
                         label={a.label}
                         emoji={a.emoji}
+                        image={a.image}
                         selected={area === a.id}
                         onClick={() => {
                           setArea(a.id as Area);
@@ -283,16 +311,50 @@ export default function SkinFinderPage() {
 
                 {/* Step 1 — Concern */}
                 {step === 1 && (
-                  <div className="flex flex-wrap gap-3">
-                    {(CONCERNS[area!] || []).map((c) => (
-                      <Chip
-                        key={c.id}
-                        label={c.label}
-                        emoji={c.emoji}
-                        selected={concern === c.id}
-                        onClick={() => setConcern(c.id)}
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                      {(CONCERNS[area!] || []).map((c) => (
+                        <Chip
+                          key={c.id}
+                          label={c.label}
+                          emoji={c.emoji}
+                          image={c.image}
+                          selected={concern === c.id}
+                          onClick={() => {
+                            setConcern(c.id);
+                            setCustomConcern('');
+                          }}
+                        />
+                      ))}
+                    </div>
+                    
+                    <div className="relative my-2">
+                      <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div className="w-full border-t border-[rgba(0,0,0,0.1)]"></div>
+                      </div>
+                      <div className="relative flex justify-center">
+                        <span className="bg-white/40 backdrop-blur-md px-3 text-xs font-bold uppercase tracking-widest text-[var(--cinematic-text-secondary)] rounded-full">
+                          OR
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col w-full">
+                      <label className="text-xs font-bold tracking-widest uppercase mb-3 text-[var(--cinematic-text-secondary)]">
+                        TYPE YOUR PROBLEM
+                      </label>
+                      <input 
+                        type="text"
+                        placeholder="e.g., Hormonal breakouts around the jawline..."
+                        value={customConcern}
+                        onChange={(e) => {
+                          setCustomConcern(e.target.value);
+                          setConcern(e.target.value.trim() !== '' ? 'custom' : null);
+                        }}
+                        className="px-5 py-4 w-full bg-[rgba(255,255,255,0.4)] border border-[rgba(0,0,0,0.1)] focus:outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)] transition-all duration-300 rounded-xl backdrop-blur-sm"
+                        style={{ color: 'var(--cinematic-text)' }}
                       />
-                    ))}
+                    </div>
                   </div>
                 )}
 
@@ -314,8 +376,8 @@ export default function SkinFinderPage() {
                               ? 'linear-gradient(135deg, rgba(6,182,212,0.1), rgba(124,58,237,0.06))'
                               : 'rgba(255,255,255,0.3)',
                           backdropFilter: 'blur(8px)',
-                          borderRadius: '0',
-                          boxShadow: skinType === s.id ? '0 0 20px rgba(6,182,212,0.15)' : 'none',
+                          borderRadius: '16px',
+                          boxShadow: skinType === s.id ? '0 0 20px rgba(6,182,212,0.15)' : '0 4px 20px rgba(0,0,0,0.05)',
                         }}
                       >
                         <div
@@ -348,12 +410,11 @@ export default function SkinFinderPage() {
                   {step > 0 && (
                     <button
                       onClick={() => setStep(step - 1)}
-                      className="px-6 py-3 text-xs font-bold tracking-widest uppercase transition-all duration-200"
+                      className="px-6 py-3 text-xs font-bold tracking-widest uppercase transition-all duration-200 rounded-full"
                       style={{
                         border: '2px solid rgba(0,0,0,0.1)',
                         background: 'transparent',
                         color: 'var(--cinematic-text-secondary)',
-                        borderRadius: '0',
                       }}
                     >
                       ← BACK
@@ -366,8 +427,7 @@ export default function SkinFinderPage() {
                         ? handleGetRecommendations()
                         : setStep(step + 1)
                     }
-                    className="btn-gradient flex-1 py-4 text-xs tracking-widest disabled:opacity-30 disabled:cursor-not-allowed disabled:transform-none"
-                    style={{ borderRadius: '0' }}
+                    className="btn-gradient flex-1 py-4 text-xs tracking-widest rounded-full disabled:opacity-30 disabled:cursor-not-allowed disabled:transform-none"
                   >
                     {step === 2 ? '✨ FIND MY PRODUCTS' : 'CONTINUE →'}
                   </button>
@@ -421,8 +481,7 @@ export default function SkinFinderPage() {
                 </p>
                 <button
                   onClick={reset}
-                  className="btn-gradient px-8 py-3 text-xs tracking-widest"
-                  style={{ borderRadius: '0' }}
+                  className="btn-gradient px-8 py-3 text-xs tracking-widest rounded-full"
                 >
                   TRY AGAIN
                 </button>
@@ -451,7 +510,7 @@ export default function SkinFinderPage() {
                       tag && (
                         <span
                           key={tag}
-                          className="text-label text-xs px-3 py-1"
+                          className="text-label text-xs px-3 py-1 rounded-full"
                           style={{
                             background: 'rgba(6,182,212,0.1)',
                             color: 'var(--cinematic-cyan)',
@@ -489,14 +548,14 @@ export default function SkinFinderPage() {
                       {result.routine.map((s, i) => (
                         <div
                           key={i}
-                          className="flex items-start gap-4 px-4 py-3"
+                          className="flex items-start gap-4 px-4 py-3 rounded-xl"
                           style={{
                             background: 'rgba(255,255,255,0.4)',
                             border: '1px solid rgba(0,0,0,0.06)',
                           }}
                         >
                           <div
-                            className="text-xs font-black flex-shrink-0 w-6 h-6 flex items-center justify-center"
+                            className="text-xs font-black flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full"
                             style={{
                               background:
                                 'linear-gradient(135deg, var(--cinematic-cyan), var(--cinematic-purple))',
@@ -532,7 +591,7 @@ export default function SkinFinderPage() {
                     {result.products?.map((p, i) => (
                       <div
                         key={i}
-                        className="px-5 py-4"
+                        className="px-5 py-4 rounded-2xl"
                         style={{
                           border: '1px solid rgba(0,0,0,0.08)',
                           background: 'rgba(255,255,255,0.5)',
@@ -555,7 +614,7 @@ export default function SkinFinderPage() {
                           {p.keyIngredients?.map((ing) => (
                             <span
                               key={ing}
-                              className="text-xs px-2 py-1"
+                              className="text-xs px-2 py-1 rounded-full"
                               style={{
                                 background: 'rgba(124,58,237,0.08)',
                                 color: 'var(--cinematic-purple)',
@@ -582,12 +641,11 @@ export default function SkinFinderPage() {
 
                 <button
                   onClick={reset}
-                  className="w-full py-4 text-xs font-bold tracking-widest uppercase transition-all duration-200"
+                  className="w-full py-4 text-xs font-bold tracking-widest uppercase transition-all duration-200 rounded-full"
                   style={{
                     border: '2px solid rgba(0,0,0,0.1)',
                     background: 'transparent',
                     color: 'var(--cinematic-text-secondary)',
-                    borderRadius: '0',
                   }}
                 >
                   ↩ START OVER
@@ -614,3 +672,4 @@ export default function SkinFinderPage() {
     </div>
   );
 }
+
