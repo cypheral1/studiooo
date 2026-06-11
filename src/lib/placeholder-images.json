@@ -1,0 +1,52 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "An elegant flat lay of cosmetic products with lavender flowers and a soft purple background.",
+      "imageUrl": "https://picsum.photos/seed/cosmetics-lavender/1920/1080",
+      "imageHint": "cosmetics lavender"
+    },
+    {
+      "id": "amazon-logo",
+      "description": "Placeholder logo for Amazon",
+      "imageUrl": "https://picsum.photos/seed/logo-one/200/100",
+      "imageHint": "logo simple"
+    },
+    {
+      "id": "nykaa-logo",
+      "description": "Placeholder logo for Nykaa",
+      "imageUrl": "https://images.unsplash.com/photo-1744390166851-82056c6552d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxsb2dvJTIwYWJzdHJhY3R8ZW58MHx8fHwxNzcyNTU2Nzc0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "logo abstract"
+    },
+    {
+      "id": "sephora-logo",
+      "description": "Placeholder logo for Sephora",
+      "imageUrl": "https://picsum.photos/seed/logo-three/200/100",
+      "imageHint": "logo modern"
+    },
+    {
+      "id": "brand-store-logo",
+      "description": "Placeholder logo for an official brand store",
+      "imageUrl": "https://picsum.photos/seed/logo-four/200/100",
+      "imageHint": "logo brand"
+    },
+    {
+      "id": "free-guide-cover",
+      "description": "A close-up of a high-end cosmetic product bottle with a purple hue.",
+      "imageUrl": "https://picsum.photos/seed/cosmetic-bottle-purple/1080/1350",
+      "imageHint": "cosmetic bottle"
+    },
+    {
+      "id": "trust-badge-1",
+      "description": "100% Secure trust badge",
+      "imageUrl": "https://picsum.photos/seed/107/100/100",
+      "imageHint": "badge security"
+    },
+    {
+      "id": "trust-badge-2",
+      "description": "AI Powered trust badge",
+      "imageUrl": "https://picsum.photos/seed/108/100/100",
+      "imageHint": "badge ai"
+    }
+  ]
+}

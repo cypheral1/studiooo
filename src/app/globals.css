@@ -1,0 +1,370 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════
+   CINEMATIC DARK MODE — Design System
+   ═══════════════════════════════════════════════════ */
+
+@layer base {
+  :root {
+    --background: 280 40% 95%;
+    --foreground: 260 50% 5%;
+    --card: 0 0% 100% / 0.45;
+    --card-foreground: 260 50% 5%;
+    --popover: 0 0% 100% / 0.45;
+    --popover-foreground: 260 50% 5%;
+    --primary: 189 96% 43%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 100% / 0.2;
+    --secondary-foreground: 260 10% 20%;
+    --muted: 260 20% 95%;
+    --muted-foreground: 260 10% 40%;
+    --accent: 330 81% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 35%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 0% / 0.08;
+    --input: 260 20% 95%;
+    --ring: 189 96% 43%;
+    --radius: 0.75rem;
+
+    /* Cinematic tokens using the requested pastel gradient palette but restoring previous cyan/pink accents */
+    --cinematic-bg: linear-gradient(135deg, #DBB2D1, #D7B4F3, #E6E6FA, #FFD1DC, #E6D5FF, #DCD0FF);
+    --cinematic-card: rgba(255, 255, 255, 0.45); /* Light glass surface */
+    --cinematic-cyan: #06B6D4; /* Restored previous accent Cyan */
+    --cinematic-pink: #EC4899; /* Restored previous accent Pink */
+    --cinematic-purple: #7C3AED; /* Restored previous accent Purple */
+    --cinematic-text: #120E16; /* Deep dark purple-grey for readability */
+    --cinematic-text-secondary: #5A4E65; /* Sophisticated dark secondary text */
+    --cinematic-border: rgba(0, 0, 0, 0.08); /* Soft dark border for glassmorphism */
+    --cinematic-glass: rgba(255, 255, 255, 0.3); /* Frosted glass */
+    --cinematic-glow-bg: linear-gradient(135deg, #E6D5FF, #DCD0FF, #E6E6FA);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--cinematic-border);
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background: var(--cinematic-bg);
+    background-attachment: fixed; /* Keep background fixed for an ultra-premium scrolling feel */
+    color: var(--cinematic-text);
+    font-family: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: 400; /* Increased font weight for optimal legibility over light gradients */
+    font-size: 1.125rem;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: rgba(6, 182, 212, 0.2);
+    color: #000;
+  }
+}
+
+/* ═══ Typography ═══ */
+
+.text-hero {
+  font-size: 12vw;
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.text-section {
+  font-size: 10vw;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.text-label {
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+/* ═══ Glassmorphism ═══ */
+
+.glass {
+  background: var(--cinematic-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--cinematic-border);
+}
+
+.glass-card {
+  background: var(--cinematic-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--cinematic-border);
+}
+
+/* ═══ Gradient Button ═══ */
+
+.btn-gradient {
+  background: linear-gradient(to right, var(--cinematic-cyan), var(--cinematic-pink));
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 1rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 0.875rem;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.15);
+}
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
+}
+
+/* ═══ 3D Cube ═══ */
+
+.cube-perspective {
+  perspective: 2000px;
+}
+
+.cube-wrapper {
+  width: 50vh;
+  height: 50vh;
+  transform-style: preserve-3d;
+  animation: cubeRotate 12s linear infinite;
+  position: relative;
+}
+
+.cube-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border: 1px solid var(--cinematic-border);
+}
+.cube-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cube-face .face-label {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  white-space: nowrap;
+}
+
+.cube-face--front  { transform: rotateX(0deg) translateZ(25vh); }
+.cube-face--bottom { transform: rotateX(-90deg) translateZ(25vh); }
+.cube-face--back   { transform: rotateX(-180deg) translateZ(25vh); }
+.cube-face--top    { transform: rotateX(90deg) translateZ(25vh); }
+
+@keyframes cubeRotate {
+  from { transform: rotateX(0deg); }
+  to   { transform: rotateX(360deg); }
+}
+
+/* ═══ Navigation ═══ */
+
+.nav-cinematic {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 1.25rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.nav-dot-live {
+  width: 8px;
+  height: 8px;
+  background: #EF4444;
+  border-radius: 50%;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+/* ═══ Grayscale → Color Hover ═══ */
+
+.img-grayscale {
+  filter: grayscale(100%);
+  transition: filter 0.5s ease;
+}
+.img-grayscale:hover {
+  filter: grayscale(0%);
+}
+
+/* ═══ Window Controls (macOS style) ═══ */
+
+.window-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.window-dot--red    { background: #EF4444; }
+.window-dot--yellow { background: #F59E0B; }
+.window-dot--green  { background: #22C55E; }
+
+/* ═══ Purple Glow Background ═══ */
+
+.purple-glow-section {
+  position: relative;
+  background: var(--cinematic-glow-bg);
+}
+.purple-glow-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: var(--cinematic-purple);
+  border-radius: 50%;
+  filter: blur(150px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+
+/* ═══ Animations ═══ */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes textReveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Stagger delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+
+/* ═══ Scrollbar ═══ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cinematic-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(18, 14, 22, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(18, 14, 22, 0.35);
+}
+
+/* ═══ Responsive Cube ═══ */
+@media (max-width: 768px) {
+  .cube-wrapper {
+    width: 70vw;
+    height: 70vw;
+  }
+  .cube-face--front  { transform: rotateX(0deg) translateZ(35vw); }
+  .cube-face--bottom { transform: rotateX(-90deg) translateZ(35vw); }
+  .cube-face--back   { transform: rotateX(-180deg) translateZ(35vw); }
+  .cube-face--top    { transform: rotateX(90deg) translateZ(35vw); }
+  
+  .text-hero {
+    font-size: 16vw;
+  }
+  .text-section {
+    font-size: 14vw;
+  }
+}
