@@ -1,0 +1,61 @@
+
+> nextn@0.1.0 dev
+> next dev --turbopack -p 9002
+
+   ▲ Next.js 15.5.9 (Turbopack)
+   - Local:        http://localhost:9002
+   - Network:      http://192.168.1.23:9002
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Compiled instrumentation Node.js in 60ms
+ ✓ Compiled instrumentation Edge in 48ms
+ ✓ Ready in 2s
+ ○ Compiling / ...
+
+warn - The class `ease-[cubic-bezier(0.34,1.56,0.64,1)]` is ambiguous and matches multiple utilities.
+warn - If this is content and not a class, replace it with `ease-&lsqb;cubic-bezier(0.34,1.56,0.64,1)&rsqb;` to silence this warning.
+ ✓ Compiled / in 6.4s
+ GET / 200 in 7123ms
+ ✓ Compiled /favicon.ico in 342ms
+ GET /favicon.ico?favicon.7ed73651.ico 200 in 645ms
+ ✓ Compiled in 327ms
+ ✓ Compiled in 211ms
+ ⨯ [Error: ENOENT: no such file or directory, open '/home/cto-ciccada/studiooo/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/cto-ciccada/studiooo/.next/server/app/page/app-build-manifest.json'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.8s
+ ⨯ [Error: ENOENT: no such file or directory, open '/home/cto-ciccada/studiooo/.next/static/development/_buildManifest.js.tmp.3spety4swrx'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/cto-ciccada/studiooo/.next/static/development/_buildManifest.js.tmp.3spety4swrx'
+}
+[Error: ENOENT: no such file or directory, open '/home/cto-ciccada/studiooo/.next/server/app/page/app-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/cto-ciccada/studiooo/.next/server/app/page/app-build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/home/cto-ciccada/studiooo/.next/static/development/_buildManifest.js.tmp.o1rtt5z5okn'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/cto-ciccada/studiooo/.next/static/development/_buildManifest.js.tmp.o1rtt5z5okn'
+}
+[Error: ENOENT: no such file or directory, open '/home/cto-ciccada/studiooo/.next/static/development/_buildManifest.js.tmp.nnnobzlxytq'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/cto-ciccada/studiooo/.next/static/development/_buildManifest.js.tmp.nnnobzlxytq'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/home/cto-ciccada/studiooo/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/cto-ciccada/studiooo/.next/server/app/favicon.ico/[__metadata_id__]/route/app-paths-manifest.json'
+}

@@ -128,14 +128,23 @@ function SlideshowCard({
           <span
             className="text-label block text-[10px] mb-1"
             style={{ color: 'var(--cinematic-cyan)' }}
+            translate="no"
           >
             {String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
           </span>
           <h2 className="text-white text-lg md:text-2xl font-black tracking-tight uppercase leading-tight">
-            {slides[current].caption}
+            {slides.map((slide, i) => (
+              <span key={i} style={{ display: i === current ? 'block' : 'none' }}>
+                {slide.caption}
+              </span>
+            ))}
           </h2>
           <p className="text-white/60 text-xs md:text-sm mt-1 font-light">
-            {slides[current].detail}
+            {slides.map((slide, i) => (
+              <span key={i} style={{ display: i === current ? 'block' : 'none' }}>
+                {slide.detail}
+              </span>
+            ))}
           </p>
         </div>
       </div>

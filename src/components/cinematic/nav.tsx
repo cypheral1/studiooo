@@ -114,6 +114,7 @@ export function CinematicNav() {
           
           {/* Dynamic Island Language Selector */}
           <div 
+            translate="no"
             className="relative flex items-center justify-center bg-black text-white rounded-[24px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.15)] z-50"
             style={{
               height: '36px',
