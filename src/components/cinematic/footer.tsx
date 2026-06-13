@@ -53,7 +53,9 @@ export function CinematicFooter() {
           </span>
         </h2>
         <a
-          href="mailto:hello@trueoriginal.shop"
+          href="https://wa.me/971583093948?text=Hi,%20I%20would%20like%20to%20verify%20my%20product%20authenticity"
+          target="_blank"
+          rel="noopener noreferrer"
           className="btn-gradient inline-block text-sm py-4 px-12"
           id="footer-cta"
           style={{ borderRadius: '0' }}

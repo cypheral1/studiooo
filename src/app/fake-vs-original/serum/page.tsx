@@ -1,5 +1,6 @@
 import { CinematicNav } from '@/components/cinematic/nav';
 import { CinematicFooter } from '@/components/cinematic/footer';
+import { HighRiskSlideshow } from '@/components/sections/high-risk-slideshow';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -30,29 +31,33 @@ export default function SerumGuidePage() {
             </span>
           </h1>
 
+          <div className="mb-16">
+            <HighRiskSlideshow />
+          </div>
+
           <div className="max-w-3xl text-base md:text-lg space-y-8" style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}>
             <div>
-              <h3 className="text-xl font-bold mb-3 text-white">1. Active Ingredient Concentration</h3>
+              <h3 className="text-xl font-bold mb-3 text-[var(--cinematic-text)]">1. Active Ingredient Concentration</h3>
               <p>Genuine serums like Vitamin C or Niacinamide clearly state the active percentage on the packaging (e.g. "10% Niacinamide"). Fakes rarely list exact percentages, or they list them but the formula is diluted far below the claimed amount.</p>
             </div>
 
             <div>
-              <h3 className="text-xl font-bold mb-3 text-white">2. Texture and Absorption</h3>
+              <h3 className="text-xl font-bold mb-3 text-[var(--cinematic-text)]">2. Texture and Absorption</h3>
               <p>Authentic serums have a consistent, lightweight texture designed for rapid absorption. Counterfeit serums may feel sticky, too oily, or leave a film because they are made with cheap filler oils instead of active concentrates.</p>
             </div>
 
             <div>
-              <h3 className="text-xl font-bold mb-3 text-white">3. Oxidation and Color</h3>
+              <h3 className="text-xl font-bold mb-3 text-[var(--cinematic-text)]">3. Oxidation and Color</h3>
               <p>Real Vitamin C serums are typically a pale yellow when fresh. Fakes may be completely colorless (no ascorbic acid) or pre-oxidized dark orange. Always check the expected color for the specific serum you&apos;re buying.</p>
             </div>
 
             <div>
-              <h3 className="text-xl font-bold mb-3 text-white">4. Hologram and Seal</h3>
+              <h3 className="text-xl font-bold mb-3 text-[var(--cinematic-text)]">4. Hologram and Seal</h3>
               <p>Premium serum brands like The Ordinary, Skinceuticals, or Paula&apos;s Choice include tamper-evident seals and holograms on the box. If the seal is missing or looks reprinted, do not use the product.</p>
             </div>
 
             <div>
-              <h3 className="text-xl font-bold mb-3 text-white">5. Results Timeline</h3>
+              <h3 className="text-xl font-bold mb-3 text-[var(--cinematic-text)]">5. Results Timeline</h3>
               <p>Authentic serums deliver visible results within the expected timeframe (e.g. skin brightening in 4–6 weeks). If a product claims instant dramatic results or produces no change whatsoever, it&apos;s likely counterfeit or completely inactive.</p>
             </div>
           </div>

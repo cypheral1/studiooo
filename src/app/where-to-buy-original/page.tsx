@@ -1,10 +1,13 @@
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-import { Container } from "@/components/container";
+import { CinematicNav } from '@/components/cinematic/nav';
+import { CinematicFooter } from '@/components/cinematic/footer';
+import { Container } from '@/components/container';
+import { HighRiskSlideshow } from '@/components/sections/high-risk-slideshow';
+import { ShippingMarquee } from '@/components/cinematic/shipping-marquee';
 import {
-  Store, CheckCircle, ShieldCheck, Star, Globe,
-  AlertTriangle, ExternalLink, BadgeCheck, Truck,
-  CreditCard, RotateCcw, HeadphonesIcon, Lock
+  Store, CheckCircle, ShieldCheck, Globe,
+  AlertTriangle, BadgeCheck, Truck,
+  CreditCard, RotateCcw, HeadphonesIcon, Lock,
+  ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -22,7 +25,7 @@ const trustedRetailers = [
     description: "Look for 'Ships from and sold by Amazon' or sellers with the 'Authorized Dealer' badge. Avoid third-party sellers without verification.",
     features: ["Easy returns", "Fast shipping", "Buyer protection"],
     badge: "Marketplace",
-    color: "from-orange-500/20 to-amber-500/20",
+    emoji: "📦"
   },
   {
     name: "Nykaa",
@@ -30,7 +33,7 @@ const trustedRetailers = [
     description: "India's leading beauty retailer. Sources directly from brands. Every product comes with authenticity guarantee and batch code verification.",
     features: ["Direct from brands", "Authenticity guaranteed", "Beauty rewards"],
     badge: "Official Partner",
-    color: "from-pink-500/20 to-rose-500/20",
+    emoji: "🛍️"
   },
   {
     name: "Sephora",
@@ -38,7 +41,7 @@ const trustedRetailers = [
     description: "Premium beauty retailer with strict sourcing policies. All products are sourced directly from brand partners with full traceability.",
     features: ["Premium brands only", "Free samples", "Loyalty rewards"],
     badge: "Authorized",
-    color: "from-violet-500/20 to-purple-500/20",
+    emoji: "💎"
   },
   {
     name: "Official Brand Websites",
@@ -46,7 +49,7 @@ const trustedRetailers = [
     description: "The gold standard. Buying directly from brand websites guarantees 100% authenticity. Many offer exclusive products and early access.",
     features: ["100% guaranteed", "Exclusive offers", "Direct support"],
     badge: "Direct",
-    color: "from-green-500/20 to-emerald-500/20",
+    emoji: "🌐"
   },
   {
     name: "Cult Beauty",
@@ -54,7 +57,7 @@ const trustedRetailers = [
     description: "UK-based curated beauty retailer known for its strict vetting process. Only sells genuine products from authorized brand partners.",
     features: ["Curated selection", "Expert reviews", "Global shipping"],
     badge: "Authorized",
-    color: "from-blue-500/20 to-cyan-500/20",
+    emoji: "💄"
   },
   {
     name: "ULTA Beauty",
@@ -62,7 +65,7 @@ const trustedRetailers = [
     description: "Major US beauty retailer with both drugstore and prestige brands. Direct brand partnerships ensure product authenticity.",
     features: ["Wide range", "Salon services", "Points rewards"],
     badge: "Authorized",
-    color: "from-red-500/20 to-rose-500/20",
+    emoji: "✨"
   },
 ];
 
@@ -112,32 +115,33 @@ const sellerRedFlags = [
 
 export default function WhereToBuyOriginalPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <Header />
-      <main className="flex-1">
+    <div className="flex min-h-screen flex-col" style={{ background: 'var(--cinematic-bg)' }}>
+      <CinematicNav />
+      <main className="flex-1 pt-32 pb-20">
+        <ShippingMarquee />
+
         {/* Hero Section */}
-        <section className="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-background to-emerald-500/5" />
-          <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-green-500/10 blur-3xl" />
-          <div className="absolute bottom-10 right-10 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
+        <section className="relative overflow-hidden pt-12 pb-16 text-center">
           <Container className="relative">
             <div className="mx-auto max-w-3xl text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-4 py-1.5 text-sm font-medium text-green-600 dark:text-green-400">
+              <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/20 text-[var(--cinematic-text)] text-xs font-bold mb-6 border border-white/40 uppercase tracking-widest backdrop-blur">
                 <Store className="h-4 w-4" />
                 Verified Retailers
-              </div>
-              <h1 className="font-headline text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-                Where to Buy{" "}
-                <span className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 bg-clip-text text-transparent animate-shimmer">
-                  Original
-                </span>
+              </span>
+              <h1 className="text-4xl md:text-6xl font-extrabold uppercase tracking-wide mb-4">
+                Where to Buy <br/> <span className="bg-gradient-to-r from-[var(--cinematic-cyan)] to-[var(--cinematic-pink)] bg-clip-text text-transparent">Original</span>
               </h1>
-              <p className="mt-6 text-lg leading-8 text-foreground/70 sm:text-xl">
-                Shop with confidence from our curated list of trusted retailers
-                and authorized sellers. Every store is vetted for authenticity
-                and reliability.
+              <p className="text-lg text-[var(--cinematic-text-secondary)] mb-8 tracking-wide">
+                Shop with confidence from our curated list of trusted retailers and authorized sellers. Every store is vetted for authenticity and reliability.
               </p>
             </div>
+          </Container>
+        </section>
+
+        {/* Carousel Section */}
+        <section className="py-12 border-y border-[var(--cinematic-border)] bg-white/10 backdrop-blur-md">
+          <Container>
+            <HighRiskSlideshow />
           </Container>
         </section>
 
@@ -145,10 +149,10 @@ export default function WhereToBuyOriginalPage() {
         <section className="py-20 sm:py-28">
           <Container>
             <div className="mx-auto max-w-2xl text-center mb-16">
-              <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
-                Trusted Retailers
+              <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl uppercase">
+                Trusted <span className="bg-gradient-to-r from-[var(--cinematic-cyan)] to-[var(--cinematic-pink)] bg-clip-text text-transparent">Retailers</span>
               </h2>
-              <p className="mt-4 text-foreground/70">
+              <p className="mt-4 text-[var(--cinematic-text-secondary)]">
                 These retailers are verified for authentic product sourcing.
               </p>
             </div>
@@ -157,44 +161,42 @@ export default function WhereToBuyOriginalPage() {
               {trustedRetailers.map((retailer) => (
                 <div
                   key={retailer.name}
-                  className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  className="group flex flex-col glass-card rounded-2xl p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 h-full"
                 >
-                  <div className={`absolute top-0 right-0 h-32 w-32 rounded-full bg-gradient-to-br ${retailer.color} blur-2xl opacity-50 transition-opacity group-hover:opacity-100`} />
-                  <div className="relative">
-                    {/* Badge */}
-                    <div className="mb-4 inline-flex items-center gap-1 rounded-full bg-green-500/10 px-3 py-1 text-xs font-semibold text-green-600 dark:text-green-400">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="text-4xl opacity-80 group-hover:opacity-100 transition-opacity group-hover:scale-110 duration-300">
+                      {retailer.emoji}
+                    </div>
+                    <div className="inline-flex items-center gap-1 rounded-full bg-white/30 px-2.5 py-1 text-[10px] font-bold text-[var(--cinematic-text)] uppercase tracking-widest border border-white/40">
                       <BadgeCheck className="h-3 w-3" /> {retailer.badge}
                     </div>
+                  </div>
 
-                    {/* Name & Score */}
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <h3 className="font-headline text-lg font-bold leading-tight">
-                        {retailer.name}
-                      </h3>
-                      <div className="flex shrink-0 items-center gap-1 rounded-lg bg-green-500/10 px-2 py-1">
-                        <Star className="h-3.5 w-3.5 fill-green-500 text-green-500" />
-                        <span className="text-xs font-bold text-green-600 dark:text-green-400">
-                          {retailer.trustScore}%
-                        </span>
-                      </div>
-                    </div>
+                  <h3 className="text-xl font-bold uppercase tracking-wide mb-2 group-hover:text-[var(--cinematic-cyan)] transition-colors">
+                    {retailer.name}
+                  </h3>
+                  
+                  <div className="flex items-center gap-2 mb-4">
+                     <span className="text-xs font-bold uppercase tracking-widest text-[var(--cinematic-text-secondary)]">Trust Score:</span>
+                     <div className="flex items-center gap-1 bg-white/40 px-2 py-0.5 rounded text-[var(--cinematic-text)] text-sm font-bold border border-white/50">
+                       {retailer.trustScore}%
+                     </div>
+                  </div>
 
-                    <p className="text-sm leading-relaxed text-foreground/60 mb-4">
-                      {retailer.description}
-                    </p>
+                  <p className="text-sm leading-relaxed text-[var(--cinematic-text-secondary)] mb-6 flex-grow">
+                    {retailer.description}
+                  </p>
 
-                    {/* Features */}
-                    <div className="flex flex-wrap gap-2">
-                      {retailer.features.map((feature) => (
-                        <span
-                          key={feature}
-                          className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground"
-                        >
-                          <CheckCircle className="h-3 w-3 text-green-500" />
-                          {feature}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-[var(--cinematic-border)]">
+                    {retailer.features.map((feature) => (
+                      <span
+                        key={feature}
+                        className="inline-flex items-center gap-1 rounded border border-white/30 bg-white/20 px-2.5 py-1 text-xs text-[var(--cinematic-text)]"
+                      >
+                        <CheckCircle className="h-3 w-3 text-[var(--cinematic-cyan)]" />
+                        {feature}
+                      </span>
+                    ))}
                   </div>
                 </div>
               ))}
@@ -203,13 +205,13 @@ export default function WhereToBuyOriginalPage() {
         </section>
 
         {/* Shopping Tips */}
-        <section className="py-20 sm:py-28 bg-secondary">
+        <section className="py-20 sm:py-28 bg-white/5 border-y border-[var(--cinematic-border)]">
           <Container>
             <div className="mx-auto max-w-2xl text-center mb-16">
-              <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
-                Safe Online Shopping Tips
+              <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl uppercase">
+                Safe Online <span className="text-[var(--cinematic-pink)]">Shopping Tips</span>
               </h2>
-              <p className="mt-4 text-foreground/70">
+              <p className="mt-4 text-[var(--cinematic-text-secondary)]">
                 Follow these guidelines to protect yourself when shopping online.
               </p>
             </div>
@@ -220,15 +222,15 @@ export default function WhereToBuyOriginalPage() {
                 return (
                   <div
                     key={tip.title}
-                    className="rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    className="rounded-2xl glass-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1"
                   >
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                      <Icon className="h-6 w-6 text-primary" />
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/30 border border-white/40">
+                      <Icon className="h-6 w-6 text-[var(--cinematic-text)]" />
                     </div>
-                    <h3 className="font-headline text-base font-bold mb-2">
+                    <h3 className="text-base font-bold uppercase tracking-wide mb-2">
                       {tip.title}
                     </h3>
-                    <p className="text-sm leading-relaxed text-foreground/60">
+                    <p className="text-sm leading-relaxed text-[var(--cinematic-text-secondary)]">
                       {tip.description}
                     </p>
                   </div>
@@ -243,14 +245,14 @@ export default function WhereToBuyOriginalPage() {
           <Container>
             <div className="mx-auto max-w-4xl">
               <div className="text-center mb-12">
-                <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-red-500/10 px-4 py-1.5 text-sm font-medium text-red-500">
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-red-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-red-500 border border-red-500/20">
                   <AlertTriangle className="h-4 w-4" />
                   Seller Red Flags
                 </div>
-                <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
-                  🚩 Avoid Sellers That Show These Signs
+                <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl uppercase">
+                  Avoid Sellers That Show These Signs
                 </h2>
-                <p className="mt-4 text-foreground/70">
+                <p className="mt-4 text-[var(--cinematic-text-secondary)]">
                   These are common characteristics of unauthorized and counterfeit sellers.
                 </p>
               </div>
@@ -259,12 +261,12 @@ export default function WhereToBuyOriginalPage() {
                 {sellerRedFlags.map((flag, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/5 p-4 transition-all hover:border-red-500/40"
+                    className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/5 p-4 transition-all hover:border-red-500/30 backdrop-blur-sm"
                   >
                     <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-500/20 text-xs font-bold text-red-500">
                       {index + 1}
                     </div>
-                    <p className="text-sm leading-relaxed text-foreground/80">
+                    <p className="text-sm leading-relaxed text-[var(--cinematic-text)] font-medium">
                       {flag}
                     </p>
                   </div>
@@ -275,41 +277,36 @@ export default function WhereToBuyOriginalPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-20 sm:py-28 bg-secondary">
+        <section className="pb-16 pt-8">
           <Container>
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-green-500/10 via-emerald-500/5 to-teal-500/10 p-8 sm:p-16 text-center">
-              <div className="absolute top-0 left-0 h-40 w-40 rounded-full bg-green-500/20 blur-3xl" />
-              <div className="absolute bottom-0 right-0 h-40 w-40 rounded-full bg-teal-500/20 blur-3xl" />
-              <div className="relative">
-                <Globe className="mx-auto h-12 w-12 text-green-500 mb-6" />
-                <h2 className="font-headline text-3xl font-bold sm:text-4xl">
-                  Already Bought a Product?
-                </h2>
-                <p className="mx-auto mt-4 max-w-xl text-foreground/70">
-                  Even trusted sellers can occasionally have issues. Verify your
-                  product&apos;s authenticity with our free AI-powered tools.
-                </p>
-                <div className="mt-8 flex justify-center gap-4 flex-wrap">
-                  <Link
-                    href="/verification-tools"
-                    className="inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg transition-all hover:scale-105"
-                  >
-                    <ShieldCheck className="h-5 w-5" />
-                    Verify Your Product
-                  </Link>
-                  <Link
-                    href="/fake-vs-original"
-                    className="inline-flex items-center gap-2 rounded-xl border border-border px-8 py-3.5 text-sm font-semibold transition-all hover:bg-muted"
-                  >
-                    Fake vs Original Guide
-                  </Link>
+            <div className="mt-8 glass-card border-[var(--cinematic-border)] rounded-2xl p-8 flex flex-col md:flex-row items-center gap-6 justify-between max-w-5xl mx-auto">
+              <div className="flex items-center gap-6">
+                <div className="h-16 w-16 bg-white/30 rounded-full flex items-center justify-center shrink-0 border border-white/40">
+                  <Globe className="h-8 w-8 text-[var(--cinematic-text)]" />
                 </div>
+                <div>
+                  <h3 className="text-xl font-bold uppercase tracking-wide mb-2">Already Bought a Product?</h3>
+                  <p className="text-sm text-[var(--cinematic-text-secondary)] leading-relaxed max-w-xl">
+                    Even trusted sellers can occasionally have issues. Verify your
+                    product&apos;s authenticity with our free AI-powered tools.
+                  </p>
+                </div>
+              </div>
+              <div className="flex shrink-0">
+                <Link
+                  href="/verification-tools"
+                  className="btn-gradient inline-flex items-center gap-2 rounded-full px-8 py-3.5 shadow-lg"
+                  style={{ borderRadius: '9999px' }}
+                >
+                  <ShieldCheck className="h-5 w-5" />
+                  Verify Product
+                </Link>
               </div>
             </div>
           </Container>
         </section>
       </main>
-      <Footer />
+      <CinematicFooter />
     </div>
   );
 }

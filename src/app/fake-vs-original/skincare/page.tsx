@@ -1,5 +1,6 @@
 import { CinematicNav } from '@/components/cinematic/nav';
 import { CinematicFooter } from '@/components/cinematic/footer';
+import { HighRiskSlideshow } from '@/components/sections/high-risk-slideshow';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -30,24 +31,28 @@ export default function SkincareGuidePage() {
               </span>
             </h1>
             
+            <div className="mb-16">
+              <HighRiskSlideshow />
+            </div>
+            
             <div className="max-w-3xl text-base md:text-lg space-y-8" style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}>
               <div>
-                <h3 className="text-xl font-bold mb-3 text-white">1. Check the Packaging</h3>
+                <h3 className="text-xl font-bold mb-3 text-[var(--cinematic-text)]">1. Check the Packaging</h3>
                 <p>Authentic skincare products usually have high-quality packaging with precise typography, correct spelling, and consistent coloring. Fake products often feature flimsy materials, blurred text, or subtle misspellings.</p>
               </div>
               
               <div>
-                <h3 className="text-xl font-bold mb-3 text-white">2. Verify the Batch Code</h3>
+                <h3 className="text-xl font-bold mb-3 text-[var(--cinematic-text)]">2. Verify the Batch Code</h3>
                 <p>Genuine items have a printed or stamped batch code that matches on both the box and the container. Counterfeits might lack this entirely or use fake codes that don&apos;t verify on standard checker websites.</p>
               </div>
 
               <div>
-                <h3 className="text-xl font-bold mb-3 text-white">3. Texture and Scent</h3>
+                <h3 className="text-xl font-bold mb-3 text-[var(--cinematic-text)]">3. Texture and Scent</h3>
                 <p>Original skincare formulas are carefully balanced. If a lotion feels overly watery, excessively greasy, or has a strong chemical odor unlike the authentic product, it is likely a fake.</p>
               </div>
               
               <div>
-                <h3 className="text-xl font-bold mb-3 text-white">4. Price Tag</h3>
+                <h3 className="text-xl font-bold mb-3 text-[var(--cinematic-text)]">4. Price Tag</h3>
                 <p>If the deal seems too good to be true, it usually is. Heavy discounts on premium skincare from unverified sellers are a massive red flag.</p>
               </div>
             </div>
