@@ -18,7 +18,7 @@ export const products = [
       "Allantoin & Glutathione",
       "Sodium Hyaluronate"
     ],
-    howToUse: "Apply a small amount to the entire face or targeted problem areas. Gently pat until completely absorbed. Follow up with moisturizer and sunscreen during the day."
+    howToUse: "Apply a small amount to the entire face or targeted problem areas. Gently pat until completely absorbed. Follow up with moisturizer and sunscreen during the day.",
   },
   {
     slug: "anua-niacinamide",
@@ -39,7 +39,7 @@ export const products = [
       "Hyaluronic Acid Complex",
       "Centella Asiatica Extract & Ceramides"
     ],
-    howToUse: "Apply a few drops to cleansed and toned skin. Gently pat into the skin until fully absorbed. Use twice daily, and always follow up with sunscreen during the morning routine."
+    howToUse: "Apply a few drops to cleansed and toned skin. Gently pat into the skin until fully absorbed. Use twice daily, and always follow up with sunscreen during the morning routine.",
   },
   {
     slug: "medicube-kojic-acid",
@@ -61,7 +61,7 @@ export const products = [
       "8 Types of Hyaluronic Acid",
       "Ceramide NP & Allantoin"
     ],
-    howToUse: "Apply a moderate amount as the final step of your skincare routine. Gently massage into the skin until the vitamin capsules fully melt. Use morning and night."
+    howToUse: "Apply a moderate amount as the final step of your skincare routine. Gently massage into the skin until the vitamin capsules fully melt. Use morning and night.",
   },
   {
     slug: "anua-azelaic",
@@ -82,7 +82,7 @@ export const products = [
       "Niacinamide",
       "Panthenol (Vitamin B5) & Ceramides"
     ],
-    howToUse: "Start slowly by using 1-2 drops, 2-3 times per week. Apply to clean skin between toner and moisturizer, preferably in the evening. Always use sunscreen during the day."
+    howToUse: "Start slowly by using 1-2 drops, 2-3 times per week. Apply to clean skin between toner and moisturizer, preferably in the evening. Always use sunscreen during the day.",
   },
   {
     slug: "dr-althea-345",
@@ -103,7 +103,7 @@ export const products = [
       "Niacinamide",
       "Centella Asiatica & Tea Tree Leaf Water"
     ],
-    howToUse: "Apply an appropriate amount evenly over the face at the moisturizer step of your routine. Gently pat to enhance absorption. Can be used morning and night."
+    howToUse: "Apply an appropriate amount evenly over the face at the moisturizer step of your routine. Gently pat to enhance absorption. Can be used morning and night.",
   },
   {
     slug: "hyaluronic-acid-serum",
@@ -123,7 +123,7 @@ export const products = [
       "Glycerin",
       "Centella Asiatica Extract"
     ],
-    howToUse: "Apply a few drops to slightly damp skin after cleansing and toning. Follow with moisturizer to lock in hydration."
+    howToUse: "Apply a few drops to slightly damp skin after cleansing and toning. Follow with moisturizer to lock in hydration.",
   },
   {
     slug: "retinol-night-cream",
@@ -143,7 +143,7 @@ export const products = [
       "Squalane",
       "Ceramides"
     ],
-    howToUse: "Apply a pea-sized amount to clean, dry skin in the evening. Begin using 2-3 nights a week and gradually increase tolerance. Must use SPF during the day."
+    howToUse: "Apply a pea-sized amount to clean, dry skin in the evening. Begin using 2-3 nights a week and gradually increase tolerance. Must use SPF during the day.",
   },
   {
     slug: "vitamin-c-sunscreen",
@@ -163,7 +163,7 @@ export const products = [
       "Vitamin E",
       "Niacinamide"
     ],
-    howToUse: "Apply generously as the final step in your morning routine, 15 minutes before sun exposure. Reapply every 2 hours when outdoors."
+    howToUse: "Apply generously as the final step in your morning routine, 15 minutes before sun exposure. Reapply every 2 hours when outdoors.",
   },
   {
     slug: "stellar-lip-oil",
@@ -183,7 +183,7 @@ export const products = [
       "Vitamin E",
       "Vegan Squalane"
     ],
-    howToUse: "Swipe onto bare lips for a hydrating tint, or layer over your favorite lipstick for a high-shine glossy finish."
+    howToUse: "Swipe onto bare lips for a hydrating tint, or layer over your favorite lipstick for a high-shine glossy finish.",
   },
   {
     slug: "niacinamide-serum",
@@ -203,7 +203,7 @@ export const products = [
       "Allantoin",
       "Aloe Vera Juice"
     ],
-    howToUse: "Apply 2-3 drops to the face morning and evening before heavier creams. Can be used alongside other active ingredients."
+    howToUse: "Apply 2-3 drops to the face morning and evening before heavier creams. Can be used alongside other active ingredients.",
   },
   {
     slug: "celestial-sheet-mask",
@@ -223,6 +223,6 @@ export const products = [
       "Green Tea Leaf Extract",
       "Propolis Extract"
     ],
-    howToUse: "Apply mask to cleansed and toned face. Leave on for 15-20 minutes. Remove and gently pat remaining essence into the skin."
+    howToUse: "Apply mask to cleansed and toned face. Leave on for 15-20 minutes. Remove and gently pat remaining essence into the skin.",
   }
 ];
