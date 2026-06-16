@@ -32,21 +32,28 @@ export const products = [
     name: "Niacinamide 10% + TXA 4% Serum",
     brand: "Anua",
     image: "/images/skincare/anua-niacinamide.jpg",
-    description: "A concentrated brightening treatment designed to address hyperpigmentation, dark spots, and uneven skin tone, focusing on long-term improvement of skin clarity and texture.",
+    images: [
+      "/images/skincare/anua-niacinamide/slide-1.jpg",
+      "/images/skincare/anua-niacinamide/slide-2.jpg",
+      "/images/skincare/anua-niacinamide/slide-3.jpg",
+      "/images/skincare/anua-niacinamide/slide-4.jpg",
+    ],
+    description: "A concentrated brightening treatment designed to address hyperpigmentation, dark spots, and uneven skin tone, focusing on long-term improvement of skin clarity and texture. Contains 10% Niacinamide, 4% Tranexamic Acid, and 2% Arbutin.",
     benefits: [
       "Targets Dark Spots & Stubborn Pigmentation",
       "Brightens Skin Tone for a Glass-Skin Finish",
       "Controls Oil & Minimizes Enlarged Pores",
-      "Improves Overall Skin Texture"
+      "Improves Overall Skin Texture",
+      "Arbutin 2% for enhanced brightening",
     ],
     ingredients: [
       "10% Niacinamide",
       "4% Tranexamic Acid (TXA)",
       "2% Arbutin",
       "Hyaluronic Acid Complex",
-      "Centella Asiatica Extract & Ceramides"
+      "Centella Asiatica Extract & Ceramides",
     ],
-    howToUse: "Apply a few drops to cleansed and toned skin. Gently pat into the skin until fully absorbed. Use twice daily, and always follow up with sunscreen during the morning routine.",
+    howToUse: "Apply an appropriate amount to the skin. Use twice daily, and always follow up with sunscreen during the morning routine. 30 mL / 1.01 FL. OZ. Barcode: 8809640734526 · EXP 2028.10.26",
   },
   {
     slug: "medicube-kojic-acid",
