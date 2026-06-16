@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 export function CinematicNav() {
@@ -47,7 +48,6 @@ export function CinematicNav() {
   };
 
   const navLinks = [
-    { label: 'HOW IT WORKS', href: '/#how-it-works' },
     { 
       label: 'FAKE VS ORIGINAL', 
       href: '/fake-vs-original',
@@ -67,10 +67,17 @@ export function CinematicNav() {
   return (
     <nav className="nav-cinematic" id="main-nav">
       <div className="flex items-center justify-between max-w-[90rem] mx-auto">
-        {/* Logo + Live Dot */}
-        <Link href="/" className="flex items-center gap-3 group" id="nav-logo">
-          <div className="nav-dot-live" />
-          <span className="text-label text-lg tracking-[0.2em]" style={{ fontSize: '1.125rem' }}>
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 group" id="nav-logo">
+          <Image
+            src="/images/logo.png"
+            alt="True Original Logo"
+            width={44}
+            height={44}
+            className="object-contain transition-transform duration-300 group-hover:scale-105"
+            priority
+          />
+          <span className="text-label text-base tracking-[0.15em] font-bold hidden sm:inline" style={{ fontSize: '1rem' }}>
             TRUEORIGINAL
           </span>
         </Link>

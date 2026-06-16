@@ -135,7 +135,7 @@
 
 .nav-cinematic {
   position: fixed;
-  top: 0;
+  top: 38px; /* sits directly below the 38px shipping marquee */
   left: 0;
   right: 0;
   z-index: 100;

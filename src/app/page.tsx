@@ -5,6 +5,7 @@ import { CinematicFreeGuide } from '@/components/cinematic/free-guide';
 import { CinematicFooter } from '@/components/cinematic/footer';
 import { SkinFinderCTA } from '@/components/cinematic/skin-finder-cta';
 
+
 export const revalidate = 3600;
 
 export default function Home() {

@@ -4,6 +4,7 @@ import './globals.css';
 import { VapiAssistant } from '@/components/vapi-assistant';
 import { Toaster } from '@/components/ui/toaster';
 import Script from 'next/script';
+import { ShippingMarquee } from '@/components/cinematic/shipping-marquee';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -47,6 +48,8 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
         <div id="google_translate_element" style={{ display: 'none' }}></div>
+        {/* Fixed marquee sits at the very top of every page */}
+        <ShippingMarquee />
         {children}
         <VapiAssistant />
         <Toaster />

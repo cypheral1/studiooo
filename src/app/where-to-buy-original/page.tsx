@@ -2,7 +2,7 @@ import { CinematicNav } from '@/components/cinematic/nav';
 import { CinematicFooter } from '@/components/cinematic/footer';
 import { Container } from '@/components/container';
 import { HighRiskSlideshow } from '@/components/sections/high-risk-slideshow';
-import { ShippingMarquee } from '@/components/cinematic/shipping-marquee';
+
 import {
   Store, CheckCircle, ShieldCheck, Globe,
   AlertTriangle, BadgeCheck, Truck,
@@ -118,7 +118,6 @@ export default function WhereToBuyOriginalPage() {
     <div className="flex min-h-screen flex-col" style={{ background: 'var(--cinematic-bg)' }}>
       <CinematicNav />
       <main className="flex-1 pt-32 pb-20">
-        <ShippingMarquee />
 
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-12 pb-16 text-center">

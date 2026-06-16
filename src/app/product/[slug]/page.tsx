@@ -14,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { ShippingMarquee } from "@/components/cinematic/shipping-marquee";
+
 import { use, useState, useCallback, useEffect } from "react";
 
 export default function ProductPage({
@@ -76,8 +76,7 @@ export default function ProductPage({
     >
       <CinematicNav />
 
-      <main className="flex-grow pt-24 pb-20 relative z-10">
-        <ShippingMarquee />
+      <main className="flex-grow pt-32 pb-20 relative z-10">
         <div className="container mx-auto px-4 max-w-6xl mt-8">
 
           {/* Breadcrumb */}
