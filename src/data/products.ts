@@ -4,6 +4,13 @@ export const products = [
     name: "Dark Spot Correcting Glow Serum",
     brand: "AXIS-Y",
     image: "/images/skincare/axis-y-glow-serum.jpg",
+    images: [
+      "/images/skincare/axis-y-glow-serum/slide-1.jpg",
+      "/images/skincare/axis-y-glow-serum/slide-2.jpg",
+      "/images/skincare/axis-y-glow-serum/slide-3.jpg",
+      "/images/skincare/axis-y-glow-serum/slide-4.jpg",
+      "/images/skincare/axis-y-glow-serum/slide-5.jpg",
+    ],
     description: "A popular K-beauty treatment designed to brighten the complexion, fade dark spots, and provide deep hydration. It is lightweight and suitable for all skin types, including sensitive and acne-prone skin.",
     benefits: [
       "Corrects Dark Spots & Hyperpigmentation",
@@ -89,6 +96,13 @@ export const products = [
     name: "345 Relief Cream",
     brand: "Dr. Althea",
     image: "/images/skincare/dr-althea-345.jpg",
+    images: [
+      "/images/skincare/dr-althea-345/slide-1.jpg",
+      "/images/skincare/dr-althea-345/slide-2.jpg",
+      "/images/skincare/dr-althea-345/slide-3.jpg",
+      "/images/skincare/dr-althea-345/slide-4.jpg",
+      "/images/skincare/dr-althea-345/slide-5.jpg",
+    ],
     description: "A dermatologist-developed gel-cream formulated primarily for oily, combination, and acne-prone skin. It focuses on barrier repair, soothing redness, and providing 72-hour hydration.",
     benefits: [
       "Repairs & Strengthens Compromised Skin Barrier",
