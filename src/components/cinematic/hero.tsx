@@ -266,13 +266,6 @@ export function CinematicHero() {
 
             <div className="mt-8 flex items-center gap-4">
               <a
-                href="/#how-it-works"
-                className="btn-gradient text-xs py-3 px-8 inline-block"
-                style={{ borderRadius: '0' }}
-              >
-                HOW IT WORKS
-              </a>
-              <a
                 href="/skin-finder"
                 className="text-label text-xs opacity-60 hover:opacity-100 transition-opacity"
               >

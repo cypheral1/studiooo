@@ -50,13 +50,6 @@ const verificationTools = [
   },
 ];
 
-const howItWorks = [
-  { step: 1, title: "Choose a Tool", description: "Select the verification method that matches what you have.", icon: Target },
-  { step: 2, title: "Upload or Enter Data", description: "Upload a clear image or enter the code from your product.", icon: Upload },
-  { step: 3, title: "AI Analysis", description: "Our AI checks 50+ authenticity markers against genuine product databases.", icon: Zap },
-  { step: 4, title: "Get Your Report", description: "Receive a detailed authenticity report with confidence score.", icon: ShieldCheck },
-];
-
 const stats = [
   { value: "2M+", label: "Products Verified", icon: CheckCircle },
   { value: "98.5%", label: "Accuracy Rate", icon: Target },
@@ -159,36 +152,6 @@ export default function VerificationToolsPage() {
                         Use Tool <ArrowRight className="h-4 w-4" />
                       </Link>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </Container>
-        </section>
-
-        {/* How It Works */}
-        <section className="py-16 sm:py-24 bg-white/5 border-y border-[var(--cinematic-border)]">
-          <Container>
-            <div className="mx-auto max-w-2xl text-center mb-12">
-              <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl uppercase">
-                How It <span className="text-[var(--cinematic-pink)]">Works</span>
-              </h2>
-              <p className="mt-4 text-[var(--cinematic-text-secondary)]">Verify any product in 4 simple steps.</p>
-            </div>
-
-            <div className="mx-auto max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {howItWorks.map((step) => {
-                const Icon = step.icon;
-                return (
-                  <div key={step.step} className="glass-card rounded-2xl border border-[var(--cinematic-border)] p-6 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--cinematic-cyan)] to-[var(--cinematic-pink)] text-white text-sm font-bold shadow-md">
-                        {step.step}
-                      </span>
-                      <Icon className="h-6 w-6 text-[var(--cinematic-text)]" />
-                    </div>
-                    <h3 className="font-bold uppercase tracking-wide text-[var(--cinematic-text)] mb-2">{step.title}</h3>
-                    <p className="text-sm text-[var(--cinematic-text-secondary)] leading-relaxed">{step.description}</p>
                   </div>
                 );
               })}
