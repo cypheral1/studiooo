@@ -167,5 +167,27 @@
     "featured": true,
     "createdAt": "2026-06-19T07:13:02.111Z",
     "updatedAt": "2026-06-19T07:19:56.036Z"
+  },
+  {
+    "slug": "test1-test1",
+    "name": "test1",
+    "brand": "test1",
+    "image": "https://imgs.search.brave.com/9l-oo2Vzs4DUAtfcNHmUpGpMkSgUX6WoYMC9Vrn7n6c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9yaGVt/YWJlYXV0eXNob3Au/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDI1LzAxL0F6ZWxh/aWMxMFNlcnVtXzIw/MDB4MjIwMF9MaXN0/aW5nMS02MDB4NjAw/LndlYnA",
+    "images": [
+      "https://imgs.search.brave.com/9l-oo2Vzs4DUAtfcNHmUpGpMkSgUX6WoYMC9Vrn7n6c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9yaGVt/YWJlYXV0eXNob3Au/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDI1LzAxL0F6ZWxh/aWMxMFNlcnVtXzIw/MDB4MjIwMF9MaXN0/aW5nMS02MDB4NjAw/LndlYnA",
+      "https://imgs.search.brave.com/9l-oo2Vzs4DUAtfcNHmUpGpMkSgUX6WoYMC9Vrn7n6c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9yaGVt/YWJlYXV0eXNob3Au/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDI1LzAxL0F6ZWxh/aWMxMFNlcnVtXzIw/MDB4MjIwMF9MaXN0/aW5nMS02MDB4NjAw/LndlYnA"
+    ],
+    "description": "test1",
+    "benefits": [
+      "test1"
+    ],
+    "ingredients": [
+      "test1"
+    ],
+    "howToUse": "test1",
+    "badge": "Verified Authentic",
+    "featured": true,
+    "createdAt": "2026-06-19T07:23:11.100Z",
+    "updatedAt": "2026-06-19T07:23:11.100Z"
   }
 ]
