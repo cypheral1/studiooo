@@ -2,6 +2,9 @@ import { CinematicNav } from '@/components/cinematic/nav';
 import { CinematicFooter } from '@/components/cinematic/footer';
 import { Container } from '@/components/container';
 import { HighRiskSlideshow } from '@/components/sections/high-risk-slideshow';
+import { getFeaturedProducts } from '@/lib/products-store';
+
+export const dynamic = 'force-dynamic';
 
 import {
   Store, CheckCircle, ShieldCheck, Globe,
@@ -113,7 +116,9 @@ const sellerRedFlags = [
   "Refuses to show proof of brand authorization",
 ];
 
-export default function WhereToBuyOriginalPage() {
+export default async function WhereToBuyOriginalPage() {
+  const featuredProducts = await getFeaturedProducts();
+
   return (
     <div className="flex min-h-screen flex-col" style={{ background: 'var(--cinematic-bg)' }}>
       <CinematicNav />
@@ -140,7 +145,7 @@ export default function WhereToBuyOriginalPage() {
         {/* Carousel Section */}
         <section className="py-12 border-y border-[var(--cinematic-border)] bg-white/10 backdrop-blur-md">
           <Container>
-            <HighRiskSlideshow />
+            <HighRiskSlideshow products={featuredProducts} />
           </Container>
         </section>
 

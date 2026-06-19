@@ -1,0 +1,171 @@
+[
+  {
+    "slug": "axis-y-glow-serum",
+    "name": "Dark Spot Correcting Glow Serum",
+    "brand": "AXIS-Y",
+    "image": "/images/skincare/axis-y-glow-serum.jpg",
+    "images": [
+      "/images/skincare/axis-y-glow-serum/slide-1.jpg",
+      "/images/skincare/axis-y-glow-serum/slide-2.jpg",
+      "/images/skincare/axis-y-glow-serum/slide-3.jpg",
+      "/images/skincare/axis-y-glow-serum/slide-4.jpg",
+      "/images/skincare/axis-y-glow-serum/slide-5.jpg"
+    ],
+    "description": "A popular K-beauty treatment designed to brighten the complexion, fade dark spots, and provide deep hydration.",
+    "benefits": [
+      "Corrects Dark Spots & Hyperpigmentation",
+      "Brightens Complexion & Improves Radiance",
+      "Provides Deep Hydration & Retains Moisture",
+      "Soothing & Balancing without irritation"
+    ],
+    "ingredients": [
+      "5% Niacinamide",
+      "Plant-Derived Squalane",
+      "Papaya & Sea Buckthorn Fruit Extracts",
+      "Allantoin & Glutathione",
+      "Sodium Hyaluronate"
+    ],
+    "howToUse": "Apply a small amount to the entire face or targeted problem areas. Gently pat until completely absorbed.",
+    "badge": "Verified Authentic",
+    "featured": true,
+    "createdAt": "2026-06-19T06:55:12.389Z",
+    "updatedAt": "2026-06-19T06:55:12.389Z"
+  },
+  {
+    "slug": "anua-niacinamide",
+    "name": "Niacinamide 10% + TXA 4% Serum",
+    "brand": "Anua",
+    "image": "/images/skincare/anua-niacinamide.jpg",
+    "images": [
+      "/images/skincare/anua-niacinamide/slide-1.jpg",
+      "/images/skincare/anua-niacinamide/slide-2.jpg",
+      "/images/skincare/anua-niacinamide/slide-3.jpg",
+      "/images/skincare/anua-niacinamide/slide-4.jpg"
+    ],
+    "description": "A concentrated brightening treatment designed to address hyperpigmentation, dark spots, and uneven skin tone.",
+    "benefits": [
+      "Targets Dark Spots & Stubborn Pigmentation",
+      "Brightens Skin Tone for a Glass-Skin Finish",
+      "Controls Oil & Minimizes Enlarged Pores",
+      "Improves Overall Skin Texture"
+    ],
+    "ingredients": [
+      "10% Niacinamide",
+      "4% Tranexamic Acid (TXA)",
+      "2% Arbutin",
+      "Hyaluronic Acid Complex",
+      "Centella Asiatica Extract & Ceramides"
+    ],
+    "howToUse": "Apply an appropriate amount to the skin. Use twice daily, and always follow up with sunscreen during the morning routine.",
+    "badge": "Top Rated",
+    "featured": true,
+    "createdAt": "2026-06-19T06:55:12.389Z",
+    "updatedAt": "2026-06-19T06:55:12.389Z"
+  },
+  {
+    "slug": "medicube-kojic-acid",
+    "name": "Kojic Acid Turmeric Vita Capsule Cream",
+    "brand": "Medicube",
+    "image": "/images/skincare/medicube-kojic-acid.jpg",
+    "description": "A brightening moisturizer designed to target hyperpigmentation and dullness with vitamin capsules that melt upon application.",
+    "benefits": [
+      "Brightens & Evens Skin Tone",
+      "Provides Deep, Multi-Layer Hydration",
+      "Strengthens the Natural Skin Barrier",
+      "Calms & Soothes Inflammation and Redness"
+    ],
+    "ingredients": [
+      "Kojic Acid",
+      "Turmeric Root Extract",
+      "5% Niacinamide",
+      "Vitamin C (Ascorbic Acid)",
+      "8 Types of Hyaluronic Acid"
+    ],
+    "howToUse": "Apply a moderate amount as the final step of your skincare routine. Gently massage until the vitamin capsules fully melt.",
+    "badge": "Guaranteed Original",
+    "featured": true,
+    "createdAt": "2026-06-19T06:55:12.389Z",
+    "updatedAt": "2026-06-19T06:55:12.389Z"
+  },
+  {
+    "slug": "anua-azelaic",
+    "name": "Azelaic Acid 10% + Hyaluron Soothing Serum",
+    "brand": "Anua",
+    "image": "/images/skincare/anua-azelaic.jpg",
+    "description": "A targeted skincare treatment designed to address acne, redness, and uneven skin texture while providing deep hydration.",
+    "benefits": [
+      "Treats Breakouts & Reduces Inflammation",
+      "Relieves Redness and Calms Sensitivity",
+      "Provides Deep Hydration Without Drying",
+      "Offers Gentle Exfoliation for Smoother Texture"
+    ],
+    "ingredients": [
+      "10% Azelaic Acid",
+      "Hyaluronic Acid & Sodium Hyaluronate",
+      "Centella Asiatica Extract",
+      "Niacinamide",
+      "Panthenol (Vitamin B5) & Ceramides"
+    ],
+    "howToUse": "Start slowly by using 1-2 drops, 2-3 times per week. Always use sunscreen during the day.",
+    "badge": "Official Stockist",
+    "featured": true,
+    "createdAt": "2026-06-19T06:55:12.389Z",
+    "updatedAt": "2026-06-19T06:55:12.389Z"
+  },
+  {
+    "slug": "dr-althea-345",
+    "name": "345 Relief Cream",
+    "brand": "Dr. Althea",
+    "image": "/images/skincare/dr-althea-345.jpg",
+    "images": [
+      "/images/skincare/dr-althea-345/slide-1.jpg",
+      "/images/skincare/dr-althea-345/slide-2.jpg",
+      "/images/skincare/dr-althea-345/slide-3.jpg",
+      "/images/skincare/dr-althea-345/slide-4.jpg",
+      "/images/skincare/dr-althea-345/slide-5.jpg"
+    ],
+    "description": "A dermatologist-developed gel-cream formulated for oily, combination, and acne-prone skin with 72-hour hydration.",
+    "benefits": [
+      "Repairs & Strengthens Compromised Skin Barrier",
+      "Significantly Reduces Redness and Sensitivity",
+      "Provides 72-Hour Lightweight Hydration",
+      "Regulates Oil Production & Fades Dark Spots"
+    ],
+    "ingredients": [
+      "5% Panthenol (Vitamin B5)",
+      "3 Types of Ceramides (NP, AS, NS)",
+      "4 Types of Peptides",
+      "Niacinamide",
+      "Centella Asiatica & Tea Tree Leaf Water"
+    ],
+    "howToUse": "Apply an appropriate amount evenly over the face at the moisturizer step. Can be used morning and night.",
+    "badge": "100% Genuine",
+    "featured": true,
+    "createdAt": "2026-06-19T06:55:12.389Z",
+    "updatedAt": "2026-06-19T06:55:12.389Z"
+  },
+  {
+    "slug": "test-test",
+    "name": "test",
+    "brand": "test",
+    "image": "https://rhemabeautyshop.com/wp-content/uploads/2026/06/Anua-Hyaluronic-Acid-Moisturizing-Gentle-Gel-Cleanser-%E2%80%93-ml.png",
+    "images": [
+      "https://rhemabeautyshop.com/wp-content/uploads/2026/06/Anua-Hyaluronic-Acid-Moisturizing-Gentle-Gel-Cleanser-%E2%80%93-ml.png",
+      "https://rhemabeautyshop.com/wp-content/uploads/2026/06/Anua-Hyaluronic-Acid-Moisturizing-Gentle-Gel-Cleanser-%E2%80%93-ml.png",
+      "https://rhemabeautyshop.com/wp-content/uploads/2026/06/Anua-Hyaluronic-Acid-Moisturizing-Gentle-Gel-Cleanser-%E2%80%93-ml.png",
+      "https://rhemabeautyshop.com/wp-content/uploads/2026/06/Anua-Hyaluronic-Acid-Moisturizing-Gentle-Gel-Cleanser-%E2%80%93-ml.png"
+    ],
+    "description": "test",
+    "benefits": [
+      "test"
+    ],
+    "ingredients": [
+      "test"
+    ],
+    "howToUse": "test",
+    "badge": "Verified Authentic",
+    "featured": true,
+    "createdAt": "2026-06-19T07:13:02.111Z",
+    "updatedAt": "2026-06-19T07:19:56.036Z"
+  }
+]

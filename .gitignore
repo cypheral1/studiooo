@@ -40,6 +40,10 @@ next-env.d.ts
 .genkit/*
 .env*
 
+# admin runtime data (created on first deploy)
+/data/admins.json
+/public/uploads/products/
+
 # firebase
 firebase-debug.log
 firestore-debug.log
