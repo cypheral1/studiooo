@@ -235,11 +235,20 @@ export async function getAllBlogs(): Promise<Blog[]> {
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (!error && data && data.length > 0) {
-      const blogs = data.map(mapDbToBlog);
-      // Sync to local backup
-      writeBlogsFile(blogs).catch(() => {});
-      return blogs;
+    if (!error && data) {
+      if (data.length > 0) {
+        const blogs = data.map(mapDbToBlog);
+        writeBlogsFile(blogs).catch(() => {});
+        return blogs;
+      } else {
+        // Table is empty in Supabase, auto-seed all existing blogs to Supabase
+        const local = await readBlogsFile();
+        if (local.length > 0) {
+          const toInsert = local.map(mapBlogToDb);
+          await supabase.from('blogs').upsert(toInsert, { onConflict: 'slug' });
+          return local;
+        }
+      }
     }
   } catch {
     // Supabase table or network issue, fallback to local store

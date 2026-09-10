@@ -227,10 +227,20 @@ export async function getAllProducts(): Promise<Product[]> {
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (!error && data && data.length > 0) {
-      const products = data.map(mapDbToProduct);
-      writeProductsFile(products).catch(() => {});
-      return products;
+    if (!error && data) {
+      if (data.length > 0) {
+        const products = data.map(mapDbToProduct);
+        writeProductsFile(products).catch(() => {});
+        return products;
+      } else {
+        // Table is empty in Supabase, auto-seed all existing products to Supabase
+        const local = await readProductsFile();
+        if (local.length > 0) {
+          const toInsert = local.map(mapProductToDb);
+          await supabase.from('products').upsert(toInsert, { onConflict: 'slug' });
+          return local;
+        }
+      }
     }
   } catch {
     // Fallback to local
