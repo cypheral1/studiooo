@@ -2,112 +2,116 @@ import { CinematicNav } from '@/components/cinematic/nav';
 import { CinematicFooter } from '@/components/cinematic/footer';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { getAllBlogs } from '@/lib/blogs-store';
+import { Clock, ArrowRight, ShieldCheck } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Blog | TrueOriginalShop',
-  description: 'Expert tips and news on product authenticity and beauty safety.',
+  title: 'Skincare Authenticity Blog & Insights | TrueOriginalShop',
+  description: 'Expert tips, laboratory research, and news on product authenticity and beauty safety.',
 };
 
-const blogPosts = [
-  {
-    title: 'How to Verify Any Cosmetic Product in 60 Seconds',
-    excerpt: 'A quick guide to using batch codes, QR scans, and packaging checks to instantly tell if your product is genuine or counterfeit.',
-    date: 'June 5, 2025',
-    tag: 'GUIDE',
-  },
-  {
-    title: 'The Hidden Dangers of Fake Sunscreen',
-    excerpt: 'Counterfeit sunscreens offer zero UV protection while exposing your skin to harmful chemicals. Here is what to watch out for.',
-    date: 'May 28, 2025',
-    tag: 'SAFETY',
-  },
-  {
-    title: 'Top 5 Most Counterfeited Beauty Brands in 2025',
-    excerpt: 'From MAC to The Ordinary, these brands are the most targeted by counterfeiters. Learn which products to be extra careful about.',
-    date: 'May 15, 2025',
-    tag: 'RESEARCH',
-  },
-  {
-    title: 'Why Fake Serums Can Damage Your Skin Permanently',
-    excerpt: 'Counterfeit serums often contain undisclosed acids and heavy metals that cause long-term scarring and pigmentation issues.',
-    date: 'May 2, 2025',
-    tag: 'HEALTH',
-  },
-  {
-    title: 'Buying Cosmetics Online: A Complete Safety Checklist',
-    excerpt: 'Follow this checklist before purchasing any beauty product from an online marketplace to protect yourself from scams.',
-    date: 'April 20, 2025',
-    tag: 'TIPS',
-  },
-  {
-    title: 'How Counterfeit Cosmetics Enter the Market',
-    excerpt: 'An inside look at how fake beauty products are manufactured, distributed, and sold through seemingly legitimate channels.',
-    date: 'April 8, 2025',
-    tag: 'INVESTIGATION',
-  },
-];
+export default async function BlogPage() {
+  const blogs = await getAllBlogs();
 
-export default function BlogPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--cinematic-bg)' }}>
       <CinematicNav />
       <main className="flex-1 flex flex-col relative overflow-hidden" style={{ paddingTop: '120px' }}>
         <div className="px-6 md:px-12 py-16 md:py-24 max-w-[90rem] mx-auto w-full relative z-10">
-          <span className="text-label text-xs block mb-4" style={{ color: 'var(--cinematic-cyan)' }}>
-            INSIGHTS &amp; NEWS
-          </span>
-          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-[0.95] mb-4">
-            OUR
-            <br />
-            <span
-              style={{
-                background: 'linear-gradient(to right, var(--cinematic-cyan), var(--cinematic-pink))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              BLOG.
-            </span>
-          </h1>
-          <p className="max-w-xl text-base md:text-lg mb-16" style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}>
-            Expert advice, authenticity guides, and the latest news in the world of beauty safety.
-          </p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+            <div>
+              <span className="text-label text-xs block mb-4" style={{ color: 'var(--cinematic-cyan)' }}>
+                INSIGHTS &amp; AUTHENTICITY RESEARCH
+              </span>
+              <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight leading-[0.95] mb-4">
+                OUR
+                <br />
+                <span
+                  style={{
+                    background: 'linear-gradient(to right, var(--cinematic-cyan), var(--cinematic-pink))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  BLOG &amp; GUIDES.
+                </span>
+              </h1>
+              <p className="max-w-xl text-base md:text-lg" style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}>
+                Dermatologist-reviewed advice, counterfeit detection blueprints, and beauty safety investigations.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Link
+                href="/admin-to-post"
+                className="text-xs px-4 py-2 rounded-xl glass-card flex items-center gap-2 hover:border-[var(--cinematic-cyan)]/50 transition-colors"
+                style={{ color: 'var(--cinematic-text-secondary)' }}
+              >
+                <ShieldCheck className="h-3.5 w-3.5 text-[var(--cinematic-cyan)]" /> Admin Portal
+              </Link>
+            </div>
+          </div>
 
           {/* Blog Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
-              <article
-                key={index}
-                className="group p-6 md:p-8 transition-all duration-300 hover:translate-y-[-4px]"
+            {blogs.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="group p-6 md:p-8 transition-all duration-300 hover:translate-y-[-4px] flex flex-col justify-between rounded-2xl block"
                 style={{
                   border: '1px solid var(--cinematic-border)',
                   background: 'rgba(255,255,255,0.02)',
                 }}
               >
-                <span
-                  className="text-label text-[10px] inline-block mb-4 px-3 py-1"
-                  style={{
-                    color: 'var(--cinematic-cyan)',
-                    border: '1px solid var(--cinematic-cyan)',
-                  }}
-                >
-                  {post.tag}
-                </span>
-                <h3 className="text-lg font-bold text-white mb-3 leading-tight">
-                  {post.title}
-                </h3>
-                <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}>
-                  {post.excerpt}
-                </p>
-                <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <span
+                      className="text-label text-[10px] inline-block px-3 py-1 font-bold rounded-md uppercase"
+                      style={{
+                        color: 'var(--cinematic-cyan)',
+                        border: '1px solid var(--cinematic-cyan)',
+                        background: 'rgba(0, 240, 255, 0.05)',
+                      }}
+                    >
+                      {post.tag}
+                    </span>
+                    {post.readTime && (
+                      <span className="text-[11px] flex items-center gap-1" style={{ color: 'var(--cinematic-text-secondary)' }}>
+                        <Clock className="h-3 w-3" /> {post.readTime}
+                      </span>
+                    )}
+                  </div>
+
+                  {post.image && (
+                    <div className="w-full h-44 mb-5 rounded-xl overflow-hidden relative border border-white/10">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  )}
+
+                  <h3 className="text-xl font-bold text-white mb-3 leading-tight group-hover:text-[var(--cinematic-cyan)] transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--cinematic-text-secondary)', fontWeight: 300 }}>
+                    {post.excerpt}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t border-white/5">
                   <span className="text-xs" style={{ color: 'var(--cinematic-text-secondary)' }}>
                     {post.date}
                   </span>
-                  <span className="text-xs font-bold group-hover:underline" style={{ color: 'var(--cinematic-cyan)' }}>
-                    READ →
+                  <span className="text-xs font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform" style={{ color: 'var(--cinematic-cyan)' }}>
+                    READ ARTICLE <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>

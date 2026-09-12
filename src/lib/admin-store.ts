@@ -6,6 +6,7 @@ import {
   hashPassword,
   verifyPassword,
 } from '@/lib/admin-auth';
+import { supabase } from '@/config/supabase';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const ADMINS_FILE = path.join(DATA_DIR, 'admins.json');
@@ -30,33 +31,66 @@ async function writeAdminsFile(admins: AdminUser[]) {
 }
 
 export async function ensureSuperadmin(): Promise<void> {
-  const admins = await readAdminsFile();
   const { username, password } = getSuperadminCredentials();
-
-  // If superadmin not in list, make sure it is updated or present
-  const superIndex = admins.findIndex((a) => a.role === 'superadmin');
+  const passwordHash = hashPassword(password);
   const now = new Date().toISOString();
 
-  if (superIndex === -1) {
-    admins.unshift({
+  // 1. Try Supabase
+  try {
+    const { data, error } = await supabase
+      .from('admins')
+      .select('*')
+      .eq('username', username)
+      .maybeSingle();
+
+    if (!error && !data) {
+      await supabase.from('admins').insert([
+        {
+          username,
+          password_hash: passwordHash,
+          role: 'superadmin',
+          created_at: now,
+        },
+      ]);
+    }
+  } catch {
+    // Fallback to local
+  }
+
+  // 2. Ensure in local file
+  const admins = await readAdminsFile();
+  if (admins.length === 0 || !admins.some((a) => a.username === username)) {
+    const superadmin: AdminUser = {
       username,
-      passwordHash: hashPassword(password),
+      passwordHash,
       role: 'superadmin',
       createdAt: now,
-    });
-    await writeAdminsFile(admins);
-  } else {
-    // Ensure username is updated to clean format
-    if (admins[superIndex].username !== username) {
-      admins[superIndex].username = username;
-      admins[superIndex].passwordHash = hashPassword(password);
-      await writeAdminsFile(admins);
-    }
+    };
+    await writeAdminsFile([superadmin, ...admins.filter((a) => a.username !== username)]);
   }
 }
 
 export async function listAdmins(): Promise<Omit<AdminUser, 'passwordHash'>[]> {
   await ensureSuperadmin();
+
+  // Try Supabase first
+  try {
+    const { data, error } = await supabase
+      .from('admins')
+      .select('id, username, role, created_at')
+      .order('created_at', { ascending: true });
+
+    if (!error && data && data.length > 0) {
+      return data.map((row) => ({
+        username: row.username,
+        role: row.role as 'superadmin' | 'admin',
+        createdAt: row.created_at,
+      }));
+    }
+  } catch {
+    // Fallback to local
+  }
+
   const admins = await readAdminsFile();
   return admins.map(({ passwordHash: _, ...admin }) => admin);
 }
@@ -89,9 +123,30 @@ export async function authenticateAdmin(
     };
   }
 
+  // Try Supabase
+  try {
+    const { data, error } = await supabase
+      .from('admins')
+      .select('*')
+      .ilike('username', cleanUser)
+      .maybeSingle();
+
+    if (!error && data) {
+      if (verifyPassword(cleanPass, data.password_hash) || (data.role === 'superadmin' && cleanPass === superCreds.password)) {
+        return {
+          username: data.username,
+          role: data.role as 'superadmin' | 'admin',
+          createdAt: data.created_at,
+        };
+      }
+    }
+  } catch {
+    // Fallback to local
+  }
+
   const admins = await readAdminsFile();
 
-  // Check matching admin in file
+  // Check matching admin in local file
   for (const a of admins) {
     const aUser = a.username.trim().toLowerCase();
     const isTarget =
@@ -115,18 +170,39 @@ export async function addAdmin(
   role: 'admin' = 'admin'
 ): Promise<{ success: boolean; error?: string }> {
   await ensureSuperadmin();
-  const admins = await readAdminsFile();
   const cleanUser = username.trim();
+  const passwordHash = hashPassword(password.trim());
+  const now = new Date().toISOString();
 
+  // 1. Try Supabase
+  try {
+    const { error } = await supabase.from('admins').insert([
+      {
+        username: cleanUser,
+        password_hash: passwordHash,
+        role,
+        created_at: now,
+      },
+    ]);
+
+    if (error) {
+      console.warn('Supabase admin insert error:', error.message);
+    }
+  } catch (err: any) {
+    console.warn('Supabase admin insert exception:', err?.message);
+  }
+
+  // 2. Sync local
+  const admins = await readAdminsFile();
   if (admins.some((a) => a.username.toLowerCase() === cleanUser.toLowerCase())) {
     return { success: false, error: 'Admin username already exists' };
   }
 
   admins.push({
     username: cleanUser,
-    passwordHash: hashPassword(password.trim()),
+    passwordHash,
     role,
-    createdAt: new Date().toISOString(),
+    createdAt: now,
   });
 
   await writeAdminsFile(admins);
@@ -137,6 +213,24 @@ export async function removeAdmin(
   username: string
 ): Promise<{ success: boolean; error?: string }> {
   await ensureSuperadmin();
+
+  // 1. Check if trying to delete superadmin credentials
+  const superCreds = getSuperadminCredentials();
+  if (username === superCreds.username) {
+    return { success: false, error: 'Cannot remove the superadmin account' };
+  }
+
+  // 2. Try Supabase
+  try {
+    const { error } = await supabase.from('admins').delete().eq('username', username);
+    if (error) {
+      console.warn('Supabase admin delete error:', error.message);
+    }
+  } catch (err: any) {
+    console.warn('Supabase admin delete exception:', err?.message);
+  }
+
+  // 3. Sync local
   const admins = await readAdminsFile();
   const target = admins.find((a) => a.username.toLowerCase() === username.trim().toLowerCase());
 

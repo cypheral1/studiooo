@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { Product, ProductInput, SlideshowProduct } from '@/types/product';
 import { slugify } from '@/lib/admin-auth';
 import { WHATSAPP_NUMBER, buildWhatsAppUrl } from '@/lib/whatsapp';
+import { supabase } from '@/config/supabase';
 
 export { WHATSAPP_NUMBER, buildWhatsAppUrl };
 
@@ -198,11 +199,85 @@ async function writeProductsFile(products: Product[]) {
   await fs.writeFile(PRODUCTS_FILE, JSON.stringify(products, null, 2), 'utf8');
 }
 
+function mapDbToProduct(row: any): Product {
+  return {
+    slug: row.slug,
+    name: row.name,
+    brand: row.brand,
+    image: row.image,
+    images: Array.isArray(row.images) ? row.images : [],
+    description: row.description,
+    benefits: Array.isArray(row.benefits) ? row.benefits : [],
+    ingredients: Array.isArray(row.ingredients) ? row.ingredients : [],
+    howToUse: row.how_to_use || row.howToUse || '',
+    badge: row.badge || 'Verified Authentic',
+    featured: row.featured ?? true,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function mapProductToDb(p: Product) {
+  return {
+    slug: p.slug,
+    name: p.name,
+    brand: p.brand,
+    image: p.image,
+    images: p.images || [],
+    description: p.description,
+    benefits: p.benefits,
+    ingredients: p.ingredients,
+    how_to_use: p.howToUse,
+    badge: p.badge || 'Verified Authentic',
+    featured: p.featured ?? true,
+    updated_at: new Date().toISOString(),
+  };
+}
+
 export async function getAllProducts(): Promise<Product[]> {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      if (data.length > 0) {
+        const products = data.map(mapDbToProduct);
+        writeProductsFile(products).catch(() => {});
+        return products;
+      } else {
+        // Table is empty in Supabase, auto-seed all existing products to Supabase
+        const local = await readProductsFile();
+        if (local.length > 0) {
+          const toInsert = local.map(mapProductToDb);
+          await supabase.from('products').upsert(toInsert, { onConflict: 'slug' });
+          return local;
+        }
+      }
+    }
+  } catch {
+    // Fallback to local
+  }
+
   return readProductsFile();
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | undefined> {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle();
+
+    if (!error && data) {
+      return mapDbToProduct(data);
+    }
+  } catch {
+    // Fallback to local
+  }
+
   const products = await readProductsFile();
   return products.find((p) => p.slug === slug);
 }
@@ -214,7 +289,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
 }
 
 export async function getFeaturedProducts(): Promise<SlideshowProduct[]> {
-  const products = await readProductsFile();
+  const products = await getAllProducts();
   return products
     .filter((p) => p.featured !== false)
     .map((p) => ({
@@ -238,16 +313,13 @@ function normalizeList(value: string[] | string | undefined): string[] {
   return [];
 }
 
-export async function createProduct(input: ProductInput): Promise<{ success: boolean; product?: Product; error?: string }> {
-  const products = await readProductsFile();
+export async function createProduct(
+  input: ProductInput
+): Promise<{ success: boolean; product?: Product; error?: string }> {
   const slug = slugify(input.slug || `${input.brand}-${input.name}`);
 
   if (!slug) {
     return { success: false, error: 'Could not generate a valid product slug' };
-  }
-
-  if (products.some((p) => p.slug === slug)) {
-    return { success: false, error: 'A product with this slug already exists' };
   }
 
   const now = new Date().toISOString();
@@ -270,6 +342,33 @@ export async function createProduct(input: ProductInput): Promise<{ success: boo
     updatedAt: now,
   };
 
+  // 1. Try Supabase insert
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .insert([mapProductToDb(product)])
+      .select()
+      .single();
+
+    if (error) {
+      console.warn('Supabase product insert returned error, falling back to local file:', error.message);
+    } else if (data) {
+      const created = mapDbToProduct(data);
+      const localProducts = await readProductsFile();
+      const updated = [created, ...localProducts.filter((p) => p.slug !== slug)];
+      await writeProductsFile(updated);
+      return { success: true, product: created };
+    }
+  } catch (err: any) {
+    console.warn('Supabase product insert error:', err?.message);
+  }
+
+  // 2. Fallback to local
+  const products = await readProductsFile();
+  if (products.some((p) => p.slug === slug)) {
+    return { success: false, error: 'A product with this slug already exists' };
+  }
+
   products.push(product);
   await writeProductsFile(products);
   return { success: true, product };
@@ -279,18 +378,14 @@ export async function updateProduct(
   slug: string,
   input: Partial<ProductInput>
 ): Promise<{ success: boolean; product?: Product; error?: string }> {
-  const products = await readProductsFile();
-  const index = products.findIndex((p) => p.slug === slug);
-
-  if (index === -1) {
+  const current = await getProductBySlug(slug);
+  if (!current) {
     return { success: false, error: 'Product not found' };
   }
 
-  const current = products[index];
   const nextVideos = input.videos !== undefined
     ? input.videos.filter(Boolean)
     : (input.video !== undefined ? (input.video ? [input.video] : undefined) : current.videos);
-
   const updated: Product = {
     ...current,
     name: input.name?.trim() ?? current.name,
@@ -309,12 +404,59 @@ export async function updateProduct(
     updatedAt: new Date().toISOString(),
   };
 
+  // 1. Try Supabase update
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .update(mapProductToDb(updated))
+      .eq('slug', slug)
+      .select()
+      .single();
+
+    if (!error && data) {
+      const saved = mapDbToProduct(data);
+      const localProducts = await readProductsFile();
+      const idx = localProducts.findIndex((p) => p.slug === slug);
+      if (idx !== -1) {
+        localProducts[idx] = saved;
+      } else {
+        localProducts.push(saved);
+      }
+      await writeProductsFile(localProducts);
+      return { success: true, product: saved };
+    }
+  } catch (err: any) {
+    console.warn('Supabase product update error:', err?.message);
+  }
+
+  // 2. Fallback to local
+  const products = await readProductsFile();
+  const index = products.findIndex((p) => p.slug === slug);
+  if (index === -1) {
+    return { success: false, error: 'Product not found' };
+  }
+
   products[index] = updated;
   await writeProductsFile(products);
   return { success: true, product: updated };
 }
 
 export async function deleteProduct(slug: string): Promise<{ success: boolean; error?: string }> {
+  // 1. Try Supabase delete
+  try {
+    const { error } = await supabase
+      .from('products')
+      .delete()
+      .eq('slug', slug);
+
+    if (error) {
+      console.warn('Supabase product delete error:', error.message);
+    }
+  } catch (err: any) {
+    console.warn('Supabase product delete error:', err?.message);
+  }
+
+  // 2. Fallback to local
   const products = await readProductsFile();
   const filtered = products.filter((p) => p.slug !== slug);
 

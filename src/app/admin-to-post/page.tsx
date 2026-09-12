@@ -23,8 +23,15 @@ import {
   Star,
   Sparkles,
   X,
+  BookOpen,
+  Edit3,
+  Search,
+  FileText,
+  Clock,
+  AlertCircle,
 } from "lucide-react";
 import type { Product, Category, ShowcaseVideo } from "@/types/product";
+import type { Blog } from "@/types/blog";
 
 interface AdminInfo {
   username: string;
@@ -64,6 +71,29 @@ const emptyVideoForm = {
   featured: false,
 };
 
+const emptyBlogForm = {
+  title: "",
+  slug: "",
+  tag: "GUIDE",
+  author: "TrueOriginal Team",
+  readTime: "4 min read",
+  excerpt: "",
+  content: "",
+  image: "",
+  featured: true,
+};
+
+const BLOG_TAGS = [
+  "GUIDE",
+  "SAFETY",
+  "RESEARCH",
+  "HEALTH",
+  "TIPS",
+  "INVESTIGATION",
+  "AUTHENTICITY",
+  "NEWS",
+];
+
 export default function AdminPanelPage() {
   const [loading, setLoading] = useState(true);
   const [admin, setAdmin] = useState<AdminInfo | null>(null);
@@ -72,16 +102,19 @@ export default function AdminPanelPage() {
   const [loginLoading, setLoginLoading] = useState(false);
 
   // Tabs
-  const [tab, setTab] = useState<"products" | "categories" | "videos" | "admins">("products");
+  const [tab, setTab] = useState<"products" | "categories" | "videos" | "blogs" | "admins">("products");
 
   // Data states
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [videos, setVideos] = useState<ShowcaseVideo[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [admins, setAdmins] = useState<AdminRecord[]>([]);
 
-  // Filter state for products list
+  // Filter & Search states
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("all");
+  const [productSearch, setProductSearch] = useState("");
+  const [blogSearch, setBlogSearch] = useState("");
 
   // Product Form State
   const [form, setForm] = useState(emptyProductForm);
@@ -90,6 +123,10 @@ export default function AdminPanelPage() {
   // Video Form State
   const [videoForm, setVideoForm] = useState(emptyVideoForm);
   const [editingVideoId, setEditingVideoId] = useState<string | null>(null);
+
+  // Blog Form State
+  const [blogForm, setBlogForm] = useState(emptyBlogForm);
+  const [editingBlogSlug, setEditingBlogSlug] = useState<string | null>(null);
 
   // Custom manual URL input states
   const [customImageUrl, setCustomImageUrl] = useState("");
@@ -102,7 +139,7 @@ export default function AdminPanelPage() {
   const [quickCategoryName, setQuickCategoryName] = useState("");
 
   const [newAdmin, setNewAdmin] = useState({ username: "", password: "" });
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   // Uploading state
   const [uploadingImagesCount, setUploadingImagesCount] = useState<number>(0);
@@ -112,13 +149,20 @@ export default function AdminPanelPage() {
   const multiVideoInputRef = useRef<HTMLInputElement>(null);
   const showcaseVideoInputRef = useRef<HTMLInputElement>(null);
 
+  const notify = (message: string, type: "success" | "error" = "success") => {
+    setStatus({ message, type });
+    setTimeout(() => {
+      setStatus(null);
+    }, 6000);
+  };
+
   const loadSession = async () => {
     try {
       const res = await fetch("/api/admin/me");
       if (res.ok) {
         const data = await res.json();
         setAdmin(data.admin);
-        await Promise.all([loadProducts(), loadCategories(), loadVideos()]);
+        await Promise.all([loadProducts(), loadCategories(), loadVideos(), loadBlogs()]);
         if (data.admin.role === "superadmin") {
           await loadAdmins();
         }
@@ -140,7 +184,7 @@ export default function AdminPanelPage() {
         setProducts(data.products || []);
       }
     } catch (e) {
-      console.error(e);
+      console.error("Failed to load products", e);
     }
   };
 
@@ -152,7 +196,7 @@ export default function AdminPanelPage() {
         setCategories(data.categories || []);
       }
     } catch (e) {
-      console.error(e);
+      console.error("Failed to load categories", e);
     }
   };
 
@@ -164,7 +208,19 @@ export default function AdminPanelPage() {
         setVideos(data.videos || []);
       }
     } catch (e) {
-      console.error(e);
+      console.error("Failed to load videos", e);
+    }
+  };
+
+  const loadBlogs = async () => {
+    try {
+      const res = await fetch("/api/admin/blogs");
+      if (res.ok) {
+        const data = await res.json();
+        setBlogs(data.blogs || []);
+      }
+    } catch (e) {
+      console.error("Failed to load blogs", e);
     }
   };
 
@@ -176,7 +232,7 @@ export default function AdminPanelPage() {
         setAdmins(data.admins || []);
       }
     } catch (e) {
-      console.error(e);
+      console.error("Failed to load admins", e);
     }
   };
 
@@ -189,22 +245,28 @@ export default function AdminPanelPage() {
     setLoginLoading(true);
     setLoginError("");
 
-    const res = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(loginForm),
-    });
-    const data = await res.json();
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginForm),
+      });
+      const data = await res.json();
 
-    if (res.ok && data.success) {
-      setAdmin(data.admin);
-      setLoginForm({ username: "", password: "" });
-      await Promise.all([loadProducts(), loadCategories(), loadVideos()]);
-      if (data.admin.role === "superadmin") await loadAdmins();
-    } else {
-      setLoginError(data.error || "Login failed");
+      if (res.ok && data.success) {
+        setAdmin(data.admin);
+        setLoginForm({ username: "", password: "" });
+        await Promise.all([loadProducts(), loadCategories(), loadVideos(), loadBlogs()]);
+        if (data.admin.role === "superadmin") await loadAdmins();
+        notify(`Welcome back, ${data.admin.username}!`);
+      } else {
+        setLoginError(data.error || "Login failed");
+      }
+    } catch {
+      setLoginError("Connection error during login");
+    } finally {
+      setLoginLoading(false);
     }
-    setLoginLoading(false);
   };
 
   const handleLogout = async () => {
@@ -213,16 +275,17 @@ export default function AdminPanelPage() {
     setProducts([]);
     setCategories([]);
     setVideos([]);
+    setBlogs([]);
     setAdmins([]);
     setForm(emptyProductForm);
     setEditingSlug(null);
+    setStatus(null);
   };
 
   // Upload multiple image files from device
   const handleMultipleImagesUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     setUploadingImagesCount(files.length);
-    setStatus("");
 
     const fileArray = Array.from(files);
     const uploadedUrls: string[] = [];
@@ -251,9 +314,9 @@ export default function AdminPanelPage() {
         ...prev,
         images: [...prev.images, ...uploadedUrls],
       }));
-      setStatus(`Successfully uploaded ${uploadedUrls.length} image(s) from device!`);
+      notify(`Successfully uploaded ${uploadedUrls.length} image(s) from device!`);
     } else {
-      setStatus("Failed to upload images");
+      notify("Failed to upload images", "error");
     }
     setUploadingImagesCount(0);
   };
@@ -262,7 +325,6 @@ export default function AdminPanelPage() {
   const handleMultipleVideosUpload = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     setUploadingVideosCount(files.length);
-    setStatus("");
 
     const fileArray = Array.from(files);
     const uploadedUrls: string[] = [];
@@ -291,9 +353,9 @@ export default function AdminPanelPage() {
         ...prev,
         videos: [...prev.videos, ...uploadedUrls],
       }));
-      setStatus(`Successfully uploaded ${uploadedUrls.length} video(s) from device!`);
+      notify(`Successfully uploaded ${uploadedUrls.length} video(s) from device!`);
     } else {
-      setStatus("Failed to upload videos");
+      notify("Failed to upload videos", "error");
     }
     setUploadingVideosCount(0);
   };
@@ -301,7 +363,6 @@ export default function AdminPanelPage() {
   // Add custom image URL(s) - supports single or multiple URLs separated by newlines, commas, or spaces
   const handleAddCustomImageUrl = () => {
     if (!customImageUrl.trim()) return;
-    // Extract all URLs (split by newline, comma, or whitespace)
     const rawTokens = customImageUrl
       .split(/[\n,\s]+/)
       .map((u) => u.trim())
@@ -312,16 +373,15 @@ export default function AdminPanelPage() {
         ...prev,
         images: [...prev.images, ...rawTokens],
       }));
-      setStatus(`Added ${rawTokens.length} image URL(s)!`);
+      notify(`Added ${rawTokens.length} image URL(s)!`);
       setCustomImageUrl("");
     } else {
-      // If no http prefix was found, still add the single string if valid
       const single = customImageUrl.trim();
       setForm((prev) => ({
         ...prev,
         images: [...prev.images, single],
       }));
-      setStatus("Added 1 image URL!");
+      notify("Added 1 image URL!");
       setCustomImageUrl("");
     }
   };
@@ -339,7 +399,7 @@ export default function AdminPanelPage() {
         ...prev,
         videos: [...prev.videos, ...rawTokens],
       }));
-      setStatus(`Added ${rawTokens.length} video URL(s)!`);
+      notify(`Added ${rawTokens.length} video URL(s)!`);
       setCustomVideoUrl("");
     } else {
       const single = customVideoUrl.trim();
@@ -347,7 +407,7 @@ export default function AdminPanelPage() {
         ...prev,
         videos: [...prev.videos, single],
       }));
-      setStatus("Added 1 video URL!");
+      notify("Added 1 video URL!");
       setCustomVideoUrl("");
     }
   };
@@ -379,13 +439,12 @@ export default function AdminPanelPage() {
     }));
   };
 
-  // Save Product (Create or Edit)
+  // ================= PRODUCTS CRUD =================
   const handleSaveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus("");
 
     if (form.images.length === 0) {
-      setStatus("Please upload or add at least one product image");
+      notify("Please upload or add at least one product image", "error");
       return;
     }
 
@@ -408,17 +467,19 @@ export default function AdminPanelPage() {
     const res = await fetch("/api/admin/products", {
       method: editingSlug ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editingSlug ? { slug: editingSlug, ...payload } : payload),
+      body: JSON.stringify(
+        editingSlug ? { slug: editingSlug, ...payload } : payload
+      ),
     });
     const data = await res.json();
 
     if (res.ok && data.success) {
-      setStatus(editingSlug ? "Product updated successfully" : "Product post published successfully!");
+      notify(editingSlug ? "Product updated successfully" : "Product post published successfully!");
       setForm(emptyProductForm);
       setEditingSlug(null);
       await loadProducts();
     } else {
-      setStatus(data.error || "Could not save product");
+      notify(data.error || "Could not save product", "error");
     }
   };
 
@@ -452,7 +513,7 @@ export default function AdminPanelPage() {
   };
 
   const handleDeleteProduct = async (slug: string) => {
-    if (!confirm("Are you sure you want to delete this product?")) return;
+    if (!confirm(`Are you sure you want to delete product "${slug}"?`)) return;
     const res = await fetch("/api/admin/products", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -460,14 +521,14 @@ export default function AdminPanelPage() {
     });
     const data = await res.json();
     if (res.ok && data.success) {
-      setStatus("Product deleted");
+      notify("Product deleted successfully");
       if (editingSlug === slug) {
         setEditingSlug(null);
         setForm(emptyProductForm);
       }
       await loadProducts();
     } else {
-      setStatus(data.error || "Delete failed");
+      notify(data.error || "Delete failed", "error");
     }
   };
 
@@ -486,9 +547,9 @@ export default function AdminPanelPage() {
       setCategories(data.categories);
       setNewCategoryName("");
       setNewCategoryDesc("");
-      setStatus("Category added successfully");
+      notify("Category added successfully");
     } else {
-      setStatus(data.error || "Could not add category");
+      notify(data.error || "Could not add category", "error");
     }
   };
 
@@ -506,9 +567,9 @@ export default function AdminPanelPage() {
       setForm((prev) => ({ ...prev, category: quickCategoryName.trim() }));
       setQuickCategoryName("");
       setQuickCategoryOpen(false);
-      setStatus(`Added and selected "${quickCategoryName.trim()}"`);
+      notify(`Added and selected "${quickCategoryName.trim()}"`);
     } else {
-      setStatus(data.error || "Could not add category");
+      notify(data.error || "Could not add category", "error");
     }
   };
 
@@ -522,9 +583,9 @@ export default function AdminPanelPage() {
     const data = await res.json();
     if (res.ok && data.success) {
       setCategories(data.categories);
-      setStatus("Category deleted");
+      notify("Category deleted");
     } else {
-      setStatus(data.error || "Delete failed");
+      notify(data.error || "Delete failed", "error");
     }
   };
 
@@ -554,9 +615,9 @@ export default function AdminPanelPage() {
       setVideos(data.videos);
       setVideoForm(emptyVideoForm);
       setEditingVideoId(null);
-      setStatus("Video showcase item saved!");
+      notify("Video showcase item saved!");
     } else {
-      setStatus(data.error || "Could not save video");
+      notify(data.error || "Could not save video", "error");
     }
   };
 
@@ -570,13 +631,93 @@ export default function AdminPanelPage() {
     const data = await res.json();
     if (res.ok && data.success) {
       setVideos(data.videos);
-      setStatus("Video deleted");
+      notify("Video deleted");
     } else {
-      setStatus(data.error || "Delete failed");
+      notify(data.error || "Delete failed", "error");
     }
   };
 
-  // Admin users management
+  // ================= BLOGS CRUD =================
+  const handleSaveBlog = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!blogForm.title.trim() || !blogForm.content.trim()) {
+      notify("Blog title and content are required", "error");
+      return;
+    }
+
+    const payload = {
+      title: blogForm.title.trim(),
+      slug: blogForm.slug.trim() || undefined,
+      tag: blogForm.tag.trim() || "GUIDE",
+      author: blogForm.author.trim() || "TrueOriginal Team",
+      readTime: blogForm.readTime.trim() || "4 min read",
+      excerpt: blogForm.excerpt.trim(),
+      content: blogForm.content.trim(),
+      image: blogForm.image.trim() || undefined,
+      featured: blogForm.featured,
+    };
+
+    const res = await fetch("/api/admin/blogs", {
+      method: editingBlogSlug ? "PUT" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        editingBlogSlug ? { ...payload, slug: editingBlogSlug } : payload
+      ),
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      notify(
+        editingBlogSlug
+          ? "Blog post updated in database!"
+          : "New blog post published to database!"
+      );
+      setBlogForm(emptyBlogForm);
+      setEditingBlogSlug(null);
+      await loadBlogs();
+    } else {
+      notify(data.error || "Could not save blog post", "error");
+    }
+  };
+
+  const handleEditBlog = (blog: Blog) => {
+    setEditingBlogSlug(blog.slug);
+    setBlogForm({
+      title: blog.title,
+      slug: blog.slug,
+      tag: blog.tag || "GUIDE",
+      author: blog.author || "TrueOriginal Team",
+      readTime: blog.readTime || "4 min read",
+      excerpt: blog.excerpt || "",
+      content: blog.content || "",
+      image: blog.image || "",
+      featured: blog.featured !== false,
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleDeleteBlog = async (slug: string) => {
+    if (!confirm(`Are you sure you want to remove the blog post "${slug}"?`)) return;
+    const res = await fetch("/api/admin/blogs", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug }),
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      notify("Blog post removed successfully");
+      if (editingBlogSlug === slug) {
+        setEditingBlogSlug(null);
+        setBlogForm(emptyBlogForm);
+      }
+      await loadBlogs();
+    } else {
+      notify(data.error || "Failed to remove blog post", "error");
+    }
+  };
+
+  // ================= ADMINS CRUD =================
   const handleAddAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await fetch("/api/admin/admins", {
@@ -588,9 +729,9 @@ export default function AdminPanelPage() {
     if (res.ok && data.success) {
       setAdmins(data.admins);
       setNewAdmin({ username: "", password: "" });
-      setStatus("Admin added successfully");
+      notify("Admin added successfully");
     } else {
-      setStatus(data.error || "Could not add admin");
+      notify(data.error || "Could not add admin", "error");
     }
   };
 
@@ -604,11 +745,33 @@ export default function AdminPanelPage() {
     const data = await res.json();
     if (res.ok && data.success) {
       setAdmins(data.admins);
-      setStatus("Admin removed");
+      notify("Admin removed");
     } else {
-      setStatus(data.error || "Could not remove admin");
+      notify(data.error || "Could not remove admin", "error");
     }
   };
+
+  // Filtered lists
+  const filteredProducts = products.filter((p) => {
+    const matchesSearch =
+      p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
+      p.brand.toLowerCase().includes(productSearch.toLowerCase()) ||
+      p.slug.toLowerCase().includes(productSearch.toLowerCase());
+
+    const matchesCategory =
+      selectedCategoryFilter === "all" ||
+      (p.category || "skincare").toLowerCase() === selectedCategoryFilter.toLowerCase();
+
+    return matchesSearch && matchesCategory;
+  });
+
+  const filteredBlogs = blogs.filter(
+    (b) =>
+      b.title.toLowerCase().includes(blogSearch.toLowerCase()) ||
+      b.tag.toLowerCase().includes(blogSearch.toLowerCase()) ||
+      b.author.toLowerCase().includes(blogSearch.toLowerCase()) ||
+      b.slug.toLowerCase().includes(blogSearch.toLowerCase())
+  );
 
   if (loading) {
     return (
@@ -626,7 +789,7 @@ export default function AdminPanelPage() {
             <Shield className="h-12 w-12 mx-auto text-[var(--cinematic-cyan)] mb-4 drop-shadow-[0_0_15px_rgba(45,212,191,0.5)]" />
             <h1 className="text-2xl font-black uppercase tracking-wide">ADMIN PANEL</h1>
             <p className="text-sm text-[var(--cinematic-text-secondary)] mt-2">
-              Sign in to manage products, categories & media for TrueOriginalShop
+              Sign in to manage products, categories, videos, blogs & admins for TrueOriginalShop
             </p>
           </div>
 
@@ -638,7 +801,7 @@ export default function AdminPanelPage() {
               <input
                 value={loginForm.username}
                 onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
-                className="mt-2 w-full rounded-xl bg-white/60 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)]"
+                className="mt-2 w-full rounded-xl bg-white/60 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)] text-black"
                 placeholder="admin or trueoriginalshopadmin"
                 required
               />
@@ -651,12 +814,16 @@ export default function AdminPanelPage() {
                 type="password"
                 value={loginForm.password}
                 onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-                className="mt-2 w-full rounded-xl bg-white/60 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)]"
+                className="mt-2 w-full rounded-xl bg-white/60 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)] text-black"
                 placeholder="••••••••••••"
                 required
               />
             </div>
-            {loginError && <p className="text-sm text-red-500 font-medium">{loginError}</p>}
+            {loginError && (
+              <p className="text-sm text-red-500 bg-red-500/10 p-3 rounded-xl border border-red-500/20 font-medium">
+                {loginError}
+              </p>
+            )}
             <button type="submit" disabled={loginLoading} className="w-full btn-gradient py-3 rounded-xl font-bold uppercase tracking-wider">
               {loginLoading ? "Signing in..." : "SIGN IN"}
             </button>
@@ -665,12 +832,6 @@ export default function AdminPanelPage() {
       </div>
     );
   }
-
-  // Filtered products
-  const filteredProducts = products.filter((p) => {
-    if (selectedCategoryFilter === "all") return true;
-    return (p.category || "skincare").toLowerCase() === selectedCategoryFilter.toLowerCase();
-  });
 
   return (
     <div className="min-h-screen pb-16" style={{ background: "var(--cinematic-bg)" }}>
@@ -702,50 +863,106 @@ export default function AdminPanelPage() {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap gap-2 mb-8 bg-white/30 p-2 rounded-2xl border border-black/5 w-max max-w-full">
-          <button
-            onClick={() => setTab("products")}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
-              tab === "products" ? "btn-gradient shadow-md scale-105" : "hover:bg-white/50 text-[var(--cinematic-text)]"
-            }`}
-          >
-            <Package className="h-4 w-4" /> Products ({products.length})
-          </button>
-          <button
-            onClick={() => setTab("categories")}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
-              tab === "categories" ? "btn-gradient shadow-md scale-105" : "hover:bg-white/50 text-[var(--cinematic-text)]"
-            }`}
-          >
-            <Tag className="h-4 w-4" /> Categories ({categories.length})
-          </button>
-          <button
-            onClick={() => setTab("videos")}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
-              tab === "videos" ? "btn-gradient shadow-md scale-105" : "hover:bg-white/50 text-[var(--cinematic-text)]"
-            }`}
-          >
-            <Film className="h-4 w-4" /> Video Showcase ({videos.length})
-          </button>
-          {admin.role === "superadmin" && (
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+          <div className="flex flex-wrap gap-2 bg-white/30 p-2 rounded-2xl border border-black/5 w-max max-w-full">
             <button
-              onClick={() => setTab("admins")}
+              onClick={() => {
+                setTab("products");
+                setEditingBlogSlug(null);
+              }}
               className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
-                tab === "admins" ? "btn-gradient shadow-md scale-105" : "hover:bg-white/50 text-[var(--cinematic-text)]"
+                tab === "products" ? "btn-gradient shadow-md scale-105" : "hover:bg-white/50 text-[var(--cinematic-text)]"
               }`}
             >
-              <Users className="h-4 w-4" /> Admins ({admins.length})
+              <Package className="h-4 w-4" /> Products ({products.length})
             </button>
-          )}
+            <button
+              onClick={() => {
+                setTab("categories");
+                setEditingBlogSlug(null);
+                setEditingSlug(null);
+              }}
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
+                tab === "categories" ? "btn-gradient shadow-md scale-105" : "hover:bg-white/50 text-[var(--cinematic-text)]"
+              }`}
+            >
+              <Tag className="h-4 w-4" /> Categories ({categories.length})
+            </button>
+            <button
+              onClick={() => {
+                setTab("videos");
+                setEditingBlogSlug(null);
+                setEditingSlug(null);
+              }}
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
+                tab === "videos" ? "btn-gradient shadow-md scale-105" : "hover:bg-white/50 text-[var(--cinematic-text)]"
+              }`}
+            >
+              <Film className="h-4 w-4" /> Video Showcase ({videos.length})
+            </button>
+            <button
+              onClick={() => {
+                setTab("blogs");
+                setEditingSlug(null);
+              }}
+              className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
+                tab === "blogs" ? "btn-gradient shadow-md scale-105" : "hover:bg-white/50 text-[var(--cinematic-text)]"
+              }`}
+            >
+              <BookOpen className="h-4 w-4" /> Blogs ({blogs.length})
+            </button>
+            {admin.role === "superadmin" && (
+              <button
+                onClick={() => {
+                  setTab("admins");
+                  setEditingSlug(null);
+                  setEditingBlogSlug(null);
+                }}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
+                  tab === "admins" ? "btn-gradient shadow-md scale-105" : "hover:bg-white/50 text-[var(--cinematic-text)]"
+                }`}
+              >
+                <Users className="h-4 w-4" /> Admins ({admins.length})
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <a
+              href="/"
+              target="_blank"
+              className="text-xs glass-card px-3 py-2 rounded-xl flex items-center gap-1.5 hover:text-[var(--cinematic-cyan)]"
+            >
+              <ExternalLink className="h-3.5 w-3.5" /> View Website
+            </a>
+            <a
+              href="/blog"
+              target="_blank"
+              className="text-xs glass-card px-3 py-2 rounded-xl flex items-center gap-1.5 hover:text-[var(--cinematic-cyan)]"
+            >
+              <BookOpen className="h-3.5 w-3.5" /> Public Blog
+            </a>
+          </div>
         </div>
 
         {/* Global status alert banner */}
         {status && (
-          <div className="mb-6 glass-card rounded-2xl px-5 py-3 text-sm text-[var(--cinematic-text)] border border-[var(--cinematic-cyan)]/30 flex items-center justify-between animate-fade-in shadow-md">
+          <div
+            className={`mb-6 glass-card rounded-2xl px-5 py-3 text-sm border flex items-center justify-between animate-fade-in shadow-md ${
+              status.type === "error"
+                ? "border-red-500/30 text-red-600 bg-red-500/10"
+                : "border-[var(--cinematic-cyan)]/30 text-[var(--cinematic-text)]"
+            }`}
+          >
             <span className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-[var(--cinematic-cyan)]" /> {status}
+              {status.type === "error" ? (
+                <AlertCircle className="h-4 w-4 text-red-500" />
+              ) : (
+                <CheckCircle2 className="h-4 w-4 text-[var(--cinematic-cyan)]" />
+              )}
+              {status.message}
             </span>
-            <button onClick={() => setStatus("")} className="text-xs opacity-60 hover:opacity-100 uppercase tracking-wider font-bold">
+            <button onClick={() => setStatus(null)} className="text-xs opacity-60 hover:opacity-100 uppercase tracking-wider font-bold">
               Dismiss
             </button>
           </div>
@@ -803,7 +1020,7 @@ export default function AdminPanelPage() {
                       placeholder="e.g. Eye Care, Lip Care..."
                       value={quickCategoryName}
                       onChange={(e) => setQuickCategoryName(e.target.value)}
-                      className="flex-1 bg-white px-3 py-2 rounded-lg text-xs outline-none border border-black/10"
+                      className="flex-1 bg-white px-3 py-2 rounded-lg text-xs outline-none border border-black/10 text-black"
                     />
                     <button
                       type="button"
@@ -818,7 +1035,7 @@ export default function AdminPanelPage() {
                 <select
                   value={form.category}
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
-                  className="w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm font-medium outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)]"
+                  className="w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm font-medium outline-none focus:border-[var(--cinematic-cyan)] text-black"
                   required
                 >
                   {categories.map((cat) => (
@@ -859,6 +1076,7 @@ export default function AdminPanelPage() {
                 required
                 placeholder="Detailed description of the product benefits, authenticity markers, and texture..."
               />
+
               <TextArea
                 label="Key Benefits (one per line)"
                 value={form.benefits}
@@ -866,6 +1084,7 @@ export default function AdminPanelPage() {
                 rows={3}
                 placeholder="Reduces dark circles & puffiness&#10;Strengthens skin barrier&#10;Hydrates deeply without greasiness"
               />
+
               <TextArea
                 label="Core Ingredients (one per line)"
                 value={form.ingredients}
@@ -873,6 +1092,7 @@ export default function AdminPanelPage() {
                 rows={3}
                 placeholder="Ginseng Root Extract&#10;Retinal (Vitamin A)&#10;Niacinamide&#10;Hyaluronic Acid"
               />
+
               <TextArea
                 label="How to Use"
                 value={form.howToUse}
@@ -947,7 +1167,7 @@ export default function AdminPanelPage() {
                         }
                       }}
                       placeholder="Paste single or multiple image URLs (space, comma, or newline separated)"
-                      className="flex-1 rounded-xl bg-white/70 border border-black/10 px-3 py-2 text-xs outline-none focus:border-[var(--cinematic-cyan)]"
+                      className="flex-1 rounded-xl bg-white/70 border border-black/10 px-3 py-2 text-xs outline-none focus:border-[var(--cinematic-cyan)] text-black"
                     />
                   </div>
                   <button
@@ -1038,7 +1258,7 @@ export default function AdminPanelPage() {
                       <Video className="h-4 w-4 text-[var(--cinematic-pink)]" /> Product Videos ({form.videos.length})
                     </label>
                     <p className="text-[11px] text-[var(--cinematic-text-secondary)]">
-                      Upload video files (MP4, WebM, MOV up to 100MB) from device or attach YouTube links
+                      Upload video files (MP4, WebM, MOV) from device or attach YouTube links
                     </p>
                   </div>
 
@@ -1084,7 +1304,7 @@ export default function AdminPanelPage() {
                         }
                       }}
                       placeholder="Paste single or multiple video/YouTube URLs (space, comma, or newline separated)"
-                      className="flex-1 rounded-xl bg-white/70 border border-black/10 px-3 py-2 text-xs outline-none focus:border-[var(--cinematic-pink)]"
+                      className="flex-1 rounded-xl bg-white/70 border border-black/10 px-3 py-2 text-xs outline-none focus:border-[var(--cinematic-pink)] text-black"
                     />
                   </div>
                   <button
@@ -1156,7 +1376,7 @@ export default function AdminPanelPage() {
                   <select
                     value={selectedCategoryFilter}
                     onChange={(e) => setSelectedCategoryFilter(e.target.value)}
-                    className="bg-white/80 border border-black/10 rounded-xl px-3 py-1.5 text-xs font-bold outline-none uppercase"
+                    className="bg-white/80 border border-black/10 rounded-xl px-3 py-1.5 text-xs font-bold outline-none uppercase text-black"
                   >
                     <option value="all">All Categories</option>
                     {categories.map((c) => (
@@ -1168,9 +1388,20 @@ export default function AdminPanelPage() {
                 </div>
               </div>
 
+              <div className="relative">
+                <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-black/40" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={productSearch}
+                  onChange={(e) => setProductSearch(e.target.value)}
+                  className="w-full bg-white/70 border border-black/10 rounded-xl pl-9 pr-3 py-2 text-xs outline-none focus:border-[var(--cinematic-cyan)] text-black"
+                />
+              </div>
+
               {filteredProducts.length === 0 ? (
                 <div className="glass-card rounded-2xl p-8 text-center text-sm text-[var(--cinematic-text-secondary)]">
-                  No products found under this category.
+                  No products found.
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -1373,7 +1604,7 @@ export default function AdminPanelPage() {
                   <select
                     value={videoForm.category || "Skincare"}
                     onChange={(e) => setVideoForm({ ...videoForm, category: e.target.value })}
-                    className="mt-2 w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm font-medium outline-none focus:border-[var(--cinematic-cyan)]"
+                    className="mt-2 w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm font-medium outline-none focus:border-[var(--cinematic-cyan)] text-black"
                   >
                     {categories.map((c) => (
                       <option key={c.id} value={c.name}>
@@ -1425,7 +1656,7 @@ export default function AdminPanelPage() {
                           const data = await res.json();
                           if (res.ok && data.success) {
                             setVideoForm((prev) => ({ ...prev, videoUrl: data.url, youtubeId: "" }));
-                            setStatus("Showcase video uploaded from device!");
+                            notify("Showcase video uploaded from device!");
                           }
                         }
                       }}
@@ -1435,7 +1666,7 @@ export default function AdminPanelPage() {
                       value={videoForm.videoUrl || ""}
                       onChange={(e) => setVideoForm({ ...videoForm, videoUrl: e.target.value })}
                       placeholder="Upload file from device or enter video URL"
-                      className="flex-1 rounded-xl bg-white/70 border border-black/10 px-4 py-2.5 text-xs outline-none focus:border-[var(--cinematic-cyan)]"
+                      className="flex-1 rounded-xl bg-white/70 border border-black/10 px-4 py-2.5 text-xs outline-none focus:border-[var(--cinematic-cyan)] text-black"
                     />
                     <button
                       type="button"
@@ -1456,7 +1687,7 @@ export default function AdminPanelPage() {
                     value={videoForm.youtubeId || ""}
                     onChange={(e) => setVideoForm({ ...videoForm, youtubeId: e.target.value })}
                     placeholder="e.g. WQtkgwN3IZU or full https://youtube.com/shorts/..."
-                    className="w-full rounded-xl bg-white/70 border border-black/10 px-4 py-2.5 text-xs outline-none focus:border-[var(--cinematic-cyan)]"
+                    className="w-full rounded-xl bg-white/70 border border-black/10 px-4 py-2.5 text-xs outline-none focus:border-[var(--cinematic-cyan)] text-black"
                   />
                 </div>
 
@@ -1554,12 +1785,251 @@ export default function AdminPanelPage() {
         )}
 
         {/* ============================================================ */}
-        {/* TAB 4: ADMIN ACCOUNTS (Superadmin only) */}
+        {/* TAB 4: BLOGS TAB */}
+        {/* ============================================================ */}
+        {tab === "blogs" && (
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8">
+            <form onSubmit={handleSaveBlog} className="glass-card rounded-3xl p-6 md:p-8 space-y-5 border border-white/20 shadow-xl">
+              <div className="flex items-center justify-between gap-4 pb-3 border-b border-black/5">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--cinematic-pink)]">
+                    Blog Manager
+                  </span>
+                  <h2 className="text-xl font-black uppercase">
+                    {editingBlogSlug ? "Edit Blog Article" : "Write & Add New Blog"}
+                  </h2>
+                </div>
+                {editingBlogSlug && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingBlogSlug(null);
+                      setBlogForm(emptyBlogForm);
+                    }}
+                    className="text-xs uppercase tracking-widest px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[var(--cinematic-text-secondary)]"
+                  >
+                    Cancel Edit
+                  </button>
+                )}
+              </div>
+
+              <Field
+                label="Article Title"
+                value={blogForm.title}
+                onChange={(v) => setBlogForm({ ...blogForm, title: v })}
+                placeholder="e.g. How to Verify Any Cosmetic Product in 60 Seconds"
+                required
+              />
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-bold uppercase tracking-widest text-[var(--cinematic-text-secondary)]">
+                    Category Tag
+                  </label>
+                  <select
+                    value={blogForm.tag}
+                    onChange={(e) => setBlogForm({ ...blogForm, tag: e.target.value })}
+                    className="mt-2 w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] text-black"
+                  >
+                    {BLOG_TAGS.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <Field
+                  label="Author / Credential"
+                  value={blogForm.author}
+                  onChange={(v) => setBlogForm({ ...blogForm, author: v })}
+                  placeholder="e.g. TrueOriginal Research Team"
+                />
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Field
+                  label="Read Time"
+                  value={blogForm.readTime}
+                  onChange={(v) => setBlogForm({ ...blogForm, readTime: v })}
+                  placeholder="4 min read"
+                />
+
+                <Field
+                  label="Custom URL Slug (Optional)"
+                  value={blogForm.slug}
+                  onChange={(v) => setBlogForm({ ...blogForm, slug: v })}
+                  placeholder="auto-generated-from-title"
+                />
+              </div>
+
+              <TextArea
+                label="Excerpt / Quick Summary"
+                value={blogForm.excerpt}
+                onChange={(v) => setBlogForm({ ...blogForm, excerpt: v })}
+                placeholder="A compelling 2-sentence summary that appears on blog cards and Google search results..."
+                rows={2}
+              />
+
+              <div>
+                <label className="text-xs font-bold uppercase tracking-widest text-[var(--cinematic-text-secondary)]">
+                  Cover Image URL (Optional)
+                </label>
+                <div className="mt-2 flex gap-2 items-center">
+                  <LinkIcon className="h-4 w-4 shrink-0 text-[var(--cinematic-cyan)]" />
+                  <input
+                    type="url"
+                    value={blogForm.image}
+                    onChange={(e) => setBlogForm({ ...blogForm, image: e.target.value })}
+                    placeholder="https://example.com/cover.jpg or /images/..."
+                    className="flex-1 rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] text-black"
+                  />
+                </div>
+                {blogForm.image && (
+                  <div className="mt-2 flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+                    <img
+                      src={blogForm.image}
+                      alt="Cover Preview"
+                      className="w-16 h-16 rounded-lg object-cover border border-white/20"
+                    />
+                    <span className="text-xs text-[var(--cinematic-text-secondary)]">Cover Preview</span>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-[var(--cinematic-text-secondary)]">
+                    Article Full Content (Markdown Supported)
+                  </label>
+                </div>
+                <textarea
+                  value={blogForm.content}
+                  onChange={(e) => setBlogForm({ ...blogForm, content: e.target.value })}
+                  placeholder="## Main Insights&#10;&#10;Write the complete article body here. You can use markdown headings and bullet points..."
+                  rows={10}
+                  required
+                  className="w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm font-mono leading-relaxed outline-none focus:border-[var(--cinematic-cyan)] text-black"
+                />
+              </div>
+
+              <label className="flex items-center gap-3 text-sm font-medium bg-white/40 p-3 rounded-xl border border-black/5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={blogForm.featured}
+                  onChange={(e) => setBlogForm({ ...blogForm, featured: e.target.checked })}
+                  className="h-4 w-4 rounded accent-[var(--cinematic-cyan)]"
+                />
+                <span className="font-semibold text-xs uppercase tracking-wider">
+                  Highlight this blog as Featured Article
+                </span>
+              </label>
+
+              <button
+                type="submit"
+                className="w-full btn-gradient py-3.5 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg"
+              >
+                <FileText className="h-4 w-4" />
+                {editingBlogSlug ? "Update Blog Article" : "Publish Blog Article"}
+              </button>
+            </form>
+
+            {/* Blogs List */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-4">
+                <h2 className="text-lg font-black uppercase">
+                  Published Articles ({blogs.length})
+                </h2>
+                <div className="relative w-48">
+                  <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-black/40" />
+                  <input
+                    type="text"
+                    placeholder="Search blogs..."
+                    value={blogSearch}
+                    onChange={(e) => setBlogSearch(e.target.value)}
+                    className="w-full bg-white/70 border border-black/10 rounded-xl pl-9 pr-3 py-1.5 text-xs outline-none focus:border-[var(--cinematic-cyan)] text-black"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-3 max-h-[750px] overflow-y-auto pr-1">
+                {filteredBlogs.map((blog) => (
+                  <div
+                    key={blog.slug}
+                    className="glass-card rounded-2xl p-4 transition-all hover:border-[var(--cinematic-cyan)]/50 space-y-3"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[var(--cinematic-cyan)]/10 text-[var(--cinematic-cyan)] border border-[var(--cinematic-cyan)]/30">
+                            {blog.tag}
+                          </span>
+                          <span className="text-[10px] text-[var(--cinematic-text-secondary)] flex items-center gap-1">
+                            <Clock className="h-3 w-3" /> {blog.readTime || "4 min"}
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-sm text-[var(--cinematic-text)] line-clamp-2 leading-snug">
+                          {blog.title}
+                        </h3>
+                        <p className="text-xs text-[var(--cinematic-text-secondary)] mt-1 line-clamp-2 leading-relaxed">
+                          {blog.excerpt}
+                        </p>
+                      </div>
+                      {blog.image && (
+                        <img
+                          src={blog.image}
+                          alt=""
+                          className="w-16 h-16 rounded-xl object-cover shrink-0 border border-black/10"
+                        />
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-black/5 text-xs">
+                      <span className="text-[11px] text-[var(--cinematic-text-secondary)]">
+                        By {blog.author} · {blog.date}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={`/blog/${blog.slug}`}
+                          target="_blank"
+                          className="glass px-2.5 py-1 rounded-lg flex items-center gap-1 text-[var(--cinematic-cyan)] hover:underline font-semibold"
+                        >
+                          <ExternalLink className="h-3 w-3" /> View
+                        </a>
+                        <button
+                          onClick={() => handleEditBlog(blog)}
+                          className="glass px-2.5 py-1 rounded-lg hover:text-[var(--cinematic-cyan)] flex items-center gap-1 font-semibold"
+                        >
+                          <Edit3 className="h-3 w-3" /> Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteBlog(blog.slug)}
+                          className="glass px-2.5 py-1 rounded-lg text-red-500 hover:bg-red-500/20 flex items-center gap-1 font-semibold"
+                        >
+                          <Trash2 className="h-3 w-3" /> Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {filteredBlogs.length === 0 && (
+                  <p className="text-center py-12 text-sm text-[var(--cinematic-text-secondary)]">
+                    No articles found matching "{blogSearch}"
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ============================================================ */}
+        {/* TAB 5: ADMIN ACCOUNTS (Superadmin only) */}
         {/* ============================================================ */}
         {tab === "admins" && admin.role === "superadmin" && (
           <div className="grid lg:grid-cols-2 gap-8 items-start">
             <form onSubmit={handleAddAdmin} className="glass-card rounded-3xl p-6 md:p-8 space-y-4 border border-white/20 shadow-xl">
-              <h2 className="text-xl font-black uppercase flex items-center gap-2">
+              <h2 className="text-xl font-black uppercase tracking-wide flex items-center gap-2">
                 <UserPlus className="h-5 w-5 text-[var(--cinematic-cyan)]" /> Add Admin User
               </h2>
               <Field
@@ -1634,7 +2104,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        className="mt-2 w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)]"
+        className="mt-2 w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)] text-black"
       />
     </div>
   );
@@ -1666,7 +2136,7 @@ function TextArea({
         required={required}
         rows={rows}
         placeholder={placeholder}
-        className="mt-2 w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)]"
+        className="mt-2 w-full rounded-xl bg-white/70 border border-black/10 px-4 py-3 text-sm outline-none focus:border-[var(--cinematic-cyan)] focus:ring-1 focus:ring-[var(--cinematic-cyan)] text-black"
       />
     </div>
   );
