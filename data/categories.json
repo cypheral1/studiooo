@@ -1,0 +1,51 @@
+[
+  {
+    "id": "skincare",
+    "name": "Skincare",
+    "slug": "skincare",
+    "description": "Serums, toners, creams, and cleansers for glowing skin"
+  },
+  {
+    "id": "eye-care",
+    "name": "Eye Care",
+    "slug": "eye-care",
+    "description": "Eye creams, serums, and patches for under-eye care"
+  },
+  {
+    "id": "serum",
+    "name": "Serum",
+    "slug": "serum",
+    "description": "Potent targeted active ingredient formulas"
+  },
+  {
+    "id": "sunscreen",
+    "name": "Sunscreen",
+    "slug": "sunscreen",
+    "description": "SPF and UV protection essentials"
+  },
+  {
+    "id": "makeup",
+    "name": "Makeup",
+    "slug": "makeup",
+    "description": "Foundations, lipsticks, and cosmetic beauty products"
+  },
+  {
+    "id": "lip-care",
+    "name": "Lip Care",
+    "slug": "lip-care",
+    "description": "Balms, tints, and lip treatments"
+  },
+  {
+    "id": "haircare",
+    "name": "Haircare",
+    "slug": "haircare",
+    "description": "Hair masks, oils, and scalp health"
+  },
+  {
+    "id": "eye-serums-creams",
+    "name": "Eye Serums & Creams",
+    "slug": "eye-serums-creams",
+    "description": "Targeted eye solutions",
+    "createdAt": "2026-09-12T10:02:05.878Z"
+  }
+]

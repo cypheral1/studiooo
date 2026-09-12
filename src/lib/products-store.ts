@@ -9,12 +9,14 @@ export { WHATSAPP_NUMBER, buildWhatsAppUrl };
 const DATA_DIR = path.join(process.cwd(), 'data');
 const PRODUCTS_FILE = path.join(DATA_DIR, 'products.json');
 const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads', 'products');
+const MEDIA_DIR = path.join(process.cwd(), 'public', 'uploads', 'media');
 
 const SEED_PRODUCTS: Product[] = [
   {
     slug: 'axis-y-glow-serum',
     name: 'Dark Spot Correcting Glow Serum',
     brand: 'AXIS-Y',
+    category: 'Skincare',
     image: '/images/skincare/axis-y-glow-serum.jpg',
     images: [
       '/images/skincare/axis-y-glow-serum/slide-1.jpg',
@@ -47,6 +49,7 @@ const SEED_PRODUCTS: Product[] = [
     slug: 'anua-niacinamide',
     name: 'Niacinamide 10% + TXA 4% Serum',
     brand: 'Anua',
+    category: 'Serum',
     image: '/images/skincare/anua-niacinamide.jpg',
     images: [
       '/images/skincare/anua-niacinamide/slide-1.jpg',
@@ -78,6 +81,7 @@ const SEED_PRODUCTS: Product[] = [
     slug: 'medicube-kojic-acid',
     name: 'Kojic Acid Turmeric Vita Capsule Cream',
     brand: 'Medicube',
+    category: 'Skincare',
     image: '/images/skincare/medicube-kojic-acid.jpg',
     description:
       'A brightening moisturizer designed to target hyperpigmentation and dullness with vitamin capsules that melt upon application.',
@@ -103,6 +107,7 @@ const SEED_PRODUCTS: Product[] = [
     slug: 'anua-azelaic',
     name: 'Azelaic Acid 10% + Hyaluron Soothing Serum',
     brand: 'Anua',
+    category: 'Serum',
     image: '/images/skincare/anua-azelaic.jpg',
     description:
       'A targeted skincare treatment designed to address acne, redness, and uneven skin texture while providing deep hydration.',
@@ -128,6 +133,7 @@ const SEED_PRODUCTS: Product[] = [
     slug: 'dr-althea-345',
     name: '345 Relief Cream',
     brand: 'Dr. Althea',
+    category: 'Skincare',
     image: '/images/skincare/dr-althea-345.jpg',
     images: [
       '/images/skincare/dr-althea-345/slide-1.jpg',
@@ -166,17 +172,25 @@ async function readProductsFile(): Promise<Product[]> {
   await ensureDataDir();
   try {
     const raw = await fs.readFile(PRODUCTS_FILE, 'utf8');
-    return JSON.parse(raw) as Product[];
+    const parsed = JSON.parse(raw) as Product[];
+    if (parsed && parsed.length > 0) {
+      return parsed.map((p) => ({
+        ...p,
+        category: p.category || 'Skincare',
+      }));
+    }
   } catch {
-    const now = new Date().toISOString();
-    const seeded = SEED_PRODUCTS.map((p) => ({
-      ...p,
-      createdAt: now,
-      updatedAt: now,
-    }));
-    await fs.writeFile(PRODUCTS_FILE, JSON.stringify(seeded, null, 2), 'utf8');
-    return seeded;
+    // missing or corrupted
   }
+
+  const now = new Date().toISOString();
+  const seeded = SEED_PRODUCTS.map((p) => ({
+    ...p,
+    createdAt: now,
+    updatedAt: now,
+  }));
+  await fs.writeFile(PRODUCTS_FILE, JSON.stringify(seeded, null, 2), 'utf8');
+  return seeded;
 }
 
 async function writeProductsFile(products: Product[]) {
@@ -193,6 +207,12 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
   return products.find((p) => p.slug === slug);
 }
 
+export async function getProductsByCategory(category: string): Promise<Product[]> {
+  const products = await readProductsFile();
+  const catSlug = slugify(category);
+  return products.filter((p) => slugify(p.category || 'skincare') === catSlug);
+}
+
 export async function getFeaturedProducts(): Promise<SlideshowProduct[]> {
   const products = await readProductsFile();
   return products
@@ -201,6 +221,7 @@ export async function getFeaturedProducts(): Promise<SlideshowProduct[]> {
       slug: p.slug,
       name: p.name,
       brand: p.brand,
+      category: p.category || 'Skincare',
       issue: p.badge || 'Verified Authentic',
       image: p.image,
     }));
@@ -234,8 +255,11 @@ export async function createProduct(input: ProductInput): Promise<{ success: boo
     slug,
     name: input.name.trim(),
     brand: input.brand.trim(),
+    category: input.category?.trim() || 'Skincare',
     image: input.image,
     images: input.images?.length ? input.images : undefined,
+    video: input.video?.trim() || input.videos?.[0] || undefined,
+    videos: input.videos?.length ? input.videos.filter(Boolean) : (input.video ? [input.video] : undefined),
     description: input.description.trim(),
     benefits: normalizeList(input.benefits),
     ingredients: normalizeList(input.ingredients),
@@ -263,12 +287,19 @@ export async function updateProduct(
   }
 
   const current = products[index];
+  const nextVideos = input.videos !== undefined
+    ? input.videos.filter(Boolean)
+    : (input.video !== undefined ? (input.video ? [input.video] : undefined) : current.videos);
+
   const updated: Product = {
     ...current,
     name: input.name?.trim() ?? current.name,
     brand: input.brand?.trim() ?? current.brand,
+    category: input.category?.trim() ?? current.category ?? 'Skincare',
     image: input.image ?? current.image,
-    images: input.images ?? current.images,
+    images: input.images !== undefined ? (input.images.length ? input.images.filter(Boolean) : undefined) : current.images,
+    video: input.video !== undefined ? (input.video?.trim() || undefined) : (nextVideos?.[0] ?? current.video),
+    videos: nextVideos,
     description: input.description?.trim() ?? current.description,
     benefits: input.benefits ? normalizeList(input.benefits) : current.benefits,
     ingredients: input.ingredients ? normalizeList(input.ingredients) : current.ingredients,
@@ -303,36 +334,52 @@ export async function deleteProduct(slug: string): Promise<{ success: boolean; e
   return { success: true };
 }
 
+/**
+ * Universal media uploader for images and videos directly from device
+ */
+export async function saveMediaFile(
+  file: File,
+  folder: string = 'general'
+): Promise<{ success: boolean; url?: string; fileType?: 'image' | 'video'; error?: string }> {
+  const isImage = file.type.startsWith('image/');
+  const isVideo = file.type.startsWith('video/');
+
+  if (!isImage && !isVideo) {
+    return { success: false, error: 'Only image or video files are allowed' };
+  }
+
+  // Max 100MB for video, 20MB for image
+  const maxSize = isVideo ? 100 * 1024 * 1024 : 20 * 1024 * 1024;
+  if (file.size > maxSize) {
+    return {
+      success: false,
+      error: isVideo ? 'Video must be 100MB or smaller' : 'Image must be 20MB or smaller',
+    };
+  }
+
+  const safeFolder = slugify(folder) || 'general';
+  const targetDir = path.join(MEDIA_DIR, safeFolder);
+  await fs.mkdir(targetDir, { recursive: true });
+
+  const ext = path.extname(file.name).toLowerCase() || (isVideo ? '.mp4' : '.jpg');
+  const filename = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}${ext}`;
+  const filepath = path.join(targetDir, filename);
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  await fs.writeFile(filepath, buffer);
+
+  const url = `/uploads/media/${safeFolder}/${filename}`;
+  return {
+    success: true,
+    url,
+    fileType: isVideo ? 'video' : 'image',
+  };
+}
+
+// Backward compatibility helper
 export async function saveProductImage(
   slug: string,
   file: File
 ): Promise<{ success: boolean; url?: string; error?: string }> {
-  if (!file.type.startsWith('image/')) {
-    return { success: false, error: 'Only image files are allowed' };
-  }
-
-  if (file.size > 5 * 1024 * 1024) {
-    return { success: false, error: 'Image must be 5MB or smaller' };
-  }
-
-  const safeSlug = slugify(slug);
-  if (!safeSlug) {
-    return { success: false, error: 'Invalid product slug' };
-  }
-
-  const ext = path.extname(file.name).toLowerCase() || '.jpg';
-  const allowed = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
-  if (!allowed.includes(ext)) {
-    return { success: false, error: 'Unsupported image format' };
-  }
-
-  const dir = path.join(UPLOADS_DIR, safeSlug);
-  await fs.mkdir(dir, { recursive: true });
-
-  const filename = `${Date.now()}${ext}`;
-  const filepath = path.join(dir, filename);
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await fs.writeFile(filepath, buffer);
-
-  return { success: true, url: `/uploads/products/${safeSlug}/${filename}` };
+  return saveMediaFile(file, slug || 'products');
 }

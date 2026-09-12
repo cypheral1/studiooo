@@ -1,0 +1,47 @@
+[
+  {
+    "id": "featured",
+    "title": "COUNTERFEIT SERUM NETWORK",
+    "subtitle": "INVESTIGATION • 2024",
+    "description": "Uncovered a $2.3M counterfeit serum ring across 14 online marketplaces. Our detection flagged inconsistencies in packaging UV markers.",
+    "youtubeId": "WQtkgwN3IZU",
+    "channelUrl": "https://youtube.com/shorts/WQtkgwN3IZU",
+    "result": "14,000+ FAKES REMOVED",
+    "category": "Skincare",
+    "featured": true,
+    "createdAt": "2024-01-15T00:00:00.000Z"
+  },
+  {
+    "id": "case-2",
+    "title": "LIPSTICK BATCH FRAUD",
+    "subtitle": "DETECTION • 2024",
+    "description": "Identified expired products relabeled with new batch numbers at a major retailer.",
+    "youtubeId": "MvULpi_qcgo",
+    "channelUrl": "https://youtube.com/shorts/MvULpi_qcgo",
+    "result": "8,200 UNITS FLAGGED",
+    "category": "Makeup",
+    "createdAt": "2024-02-10T00:00:00.000Z"
+  },
+  {
+    "id": "case-3",
+    "title": "PERFUME AUTHENTICATION",
+    "subtitle": "PARTNERSHIP • 2024",
+    "description": "Integrated verification system for a luxury fragrance house across 200+ retail locations.",
+    "youtubeId": "FWp6Cmc5agk",
+    "channelUrl": "https://youtube.com/shorts/FWp6Cmc5agk",
+    "result": "99.9% ACCURACY",
+    "category": "Eye Care",
+    "createdAt": "2024-03-05T00:00:00.000Z"
+  },
+  {
+    "id": "case-4",
+    "title": "SKINCARE SUPPLY CHAIN",
+    "subtitle": "AUDIT • 2024",
+    "description": "Full supply chain audit revealing 3 unauthorized distributors selling diluted formulations.",
+    "youtubeId": "IG7S_nYzc_k",
+    "channelUrl": "https://youtube.com/shorts/IG7S_nYzc_k",
+    "result": "3 SOURCES BLOCKED",
+    "category": "Skincare",
+    "createdAt": "2024-04-12T00:00:00.000Z"
+  }
+]

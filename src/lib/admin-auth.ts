@@ -11,7 +11,7 @@ function getSessionSecret(): string {
 
 export function getSuperadminCredentials() {
   return {
-    username: process.env.ADMIN_SUPER_USERNAME || 'trueorginalshopadmin',
+    username: process.env.ADMIN_SUPER_USERNAME || 'trueoriginalshopadmin',
     password: process.env.ADMIN_SUPER_PASSWORD || 'trueoriginalshop@123456',
   };
 }

@@ -28,9 +28,10 @@ export async function POST(req: Request) {
     });
     response.cookies.set(sessionCookieOptions(token));
     return response;
-  } catch {
+  } catch (err: any) {
+    console.error('Login error:', err);
     return NextResponse.json(
-      { success: false, error: 'Login failed' },
+      { success: false, error: err?.message || 'Login failed' },
       { status: 500 }
     );
   }

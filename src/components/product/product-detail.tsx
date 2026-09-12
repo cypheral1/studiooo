@@ -8,6 +8,9 @@ import {
   ChevronLeft,
   Images,
   X,
+  Video,
+  Play,
+  Tag,
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useCallback, useEffect } from "react";
@@ -51,6 +54,10 @@ export function ProductDetail({ product }: { product: Product }) {
     return () => window.removeEventListener("keydown", handler);
   }, [lightboxOpen, gallery.length]);
 
+  const isYouTube =
+    product.video &&
+    (product.video.includes("youtube.com") || product.video.includes("youtu.be"));
+
   return (
     <div
       className="min-h-screen text-[var(--cinematic-text)] flex flex-col selection:bg-[var(--cinematic-cyan)]/30"
@@ -60,7 +67,8 @@ export function ProductDetail({ product }: { product: Product }) {
 
       <main className="flex-grow pt-32 pb-20 relative z-10">
         <div className="container mx-auto px-4 max-w-6xl mt-8">
-          <div className="flex items-center gap-2 text-sm text-[var(--cinematic-text-secondary)] mb-8">
+          {/* Breadcrumbs */}
+          <div className="flex items-center gap-2 text-sm text-[var(--cinematic-text-secondary)] mb-8 flex-wrap">
             <Link href="/" className="hover:text-[var(--cinematic-cyan)] transition-colors">
               Home
             </Link>
@@ -68,8 +76,14 @@ export function ProductDetail({ product }: { product: Product }) {
             <Link href="/where-to-buy-original" className="hover:text-[var(--cinematic-cyan)] transition-colors">
               Where to Buy
             </Link>
+            {product.category && (
+              <>
+                <ChevronRight className="h-4 w-4" />
+                <span className="text-[var(--cinematic-cyan)] font-medium">{product.category}</span>
+              </>
+            )}
             <ChevronRight className="h-4 w-4" />
-            <span className="text-[var(--cinematic-text)]">{product.name}</span>
+            <span className="text-[var(--cinematic-text)] font-semibold truncate max-w-[200px] sm:max-w-none">{product.name}</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
@@ -142,12 +156,13 @@ export function ProductDetail({ product }: { product: Product }) {
                           }`}
                         >
                           <img
-                          src={src}
-                          alt={`Thumbnail ${i + 1}`}
-                          onError={(e) => {
-                            e.currentTarget.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ffffff10'/%3E%3Ctext x='50%25' y='55%25' font-family='sans-serif' font-size='24' fill='%23ffffff30' text-anchor='middle' dominant-baseline='middle'%3E🖼%3C/text%3E%3C/svg%3E`;
-                          }}
-                          className="w-full h-full object-cover" />
+                            src={src}
+                            alt={`Thumbnail ${i + 1}`}
+                            onError={(e) => {
+                              e.currentTarget.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ffffff10'/%3E%3Ctext x='50%25' y='55%25' font-family='sans-serif' font-size='24' fill='%23ffffff30' text-anchor='middle' dominant-baseline='middle'%3E🖼%3C/text%3E%3C/svg%3E`;
+                            }}
+                            className="w-full h-full object-cover"
+                          />
                         </button>
                       ))}
                     </div>
@@ -157,8 +172,15 @@ export function ProductDetail({ product }: { product: Product }) {
             </div>
 
             <div className="flex flex-col justify-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--cinematic-cyan)]/10 border border-[var(--cinematic-cyan)]/20 text-[var(--cinematic-cyan)] text-xs font-bold tracking-widest uppercase mb-4 w-max">
-                <ShieldCheck className="h-4 w-4" /> {product.badge || "Verified Authentic"}
+              <div className="flex items-center gap-2 mb-4 flex-wrap">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--cinematic-cyan)]/10 border border-[var(--cinematic-cyan)]/20 text-[var(--cinematic-cyan)] text-xs font-bold tracking-widest uppercase">
+                  <ShieldCheck className="h-4 w-4" /> {product.badge || "Verified Authentic"}
+                </div>
+                {product.category && (
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--cinematic-pink)]/10 border border-[var(--cinematic-pink)]/20 text-[var(--cinematic-pink)] text-xs font-bold tracking-widest uppercase">
+                    <Tag className="h-3 w-3" /> {product.category}
+                  </div>
+                )}
               </div>
 
               <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-2">{product.name}</h1>
@@ -181,6 +203,52 @@ export function ProductDetail({ product }: { product: Product }) {
                   Contact for the best price
                 </span>
               </a>
+
+              {/* Product Video Section if present */}
+              {(() => {
+                const productVideos = product.videos?.length
+                  ? product.videos
+                  : product.video
+                  ? [product.video]
+                  : [];
+
+                if (productVideos.length === 0) return null;
+
+                return (
+                  <div className="mb-8 glass-card rounded-2xl p-5 border border-purple-500/20 shadow-md">
+                    <h3 className="text-lg font-bold mb-3 flex items-center gap-2 text-purple-400">
+                      <Video className="h-5 w-5" /> Product Video & Demos ({productVideos.length})
+                    </h3>
+                    <div className="space-y-4">
+                      {productVideos.map((vid, idx) => {
+                        const isYT = vid.includes("youtube.com") || vid.includes("youtu.be");
+                        return (
+                          <div key={idx} className="rounded-xl overflow-hidden bg-black/80">
+                            {isYT ? (
+                              <div className="aspect-video w-full">
+                                <iframe
+                                  src={vid}
+                                  title={`Product Video ${idx + 1}`}
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                  allowFullScreen
+                                  className="w-full h-full border-0"
+                                />
+                              </div>
+                            ) : (
+                              <video
+                                src={vid}
+                                controls
+                                playsInline
+                                className="w-full rounded-xl max-h-80 bg-black/90 object-contain shadow-inner"
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
 
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
